@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>💊 Pharmacology · Interactive Review</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            background: radial-gradient(circle at 30% 10%, #0b1c2f, #030a12);
+            min-height: 100vh;
+            color: #e3f2fd;
+            padding: 20px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #app { max-width: 1300px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; min-height: 95vh; }
+        .main-content { flex: 1; }
+        .glass-card, .sheet-card, .question-card, .mode-toggle, .result-card, .review-item {
+            background: rgba(10, 25, 40, 0.45);
+            backdrop-filter: blur(14px) saturate(180%);
+            -webkit-backdrop-filter: blur(14px) saturate(180%);
+            border: 1px solid rgba(0, 255, 255, 0.25);
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(0, 255, 255, 0.1) inset;
+            transition: all 0.2s ease;
+        }
+        .glass-card { padding: 24px 22px; }
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-weight: 700;
+            font-size: 2.1rem;
+            background: linear-gradient(135deg, #a0e9ff, #4dd0e1, #00bcd4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .mode-toggle {
+            display: flex;
+            padding: 6px;
+            gap: 6px;
+            border-radius: 60px;
+            background: rgba(0,20,30,0.5);
+            border: 1px solid rgba(0,230,250,0.3);
+        }
+        .mode-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #b0e0ff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+        .mode-btn.active {
+            background: rgba(0,200,255,0.18);
+            border: 1px solid #00e5ff;
+            color: #d4f4ff;
+            box-shadow: 0 0 15px #00bcd4;
+        }
+        .sheets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .sheet-card {
+            padding: 22px 18px;
+            cursor: pointer;
+            border-left: 4px solid #0cf;
+        }
+        .sheet-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 30px -8px #00000080, 0 0 20px #00bcd466;
+            border: 1px solid #0cf;
+        }
+        .sheet-title { font-size: 1.4rem; font-weight: 700; color: #e0f2fe; }
+        .back-btn {
+            background: transparent;
+            border: 1px solid #2aa0c0;
+            color: #b4e6ff;
+            padding: 10px 18px;
+            border-radius: 40px;
+            margin-bottom: 24px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .progress-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .progress-bar-bg { height: 10px; background: #0a1e2b; border-radius: 20px; border: 1px solid #1e5f7a; overflow: hidden; flex: 1; margin-right: 16px; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #00e5ff, #1e88e5); border-radius: 20px; box-shadow: 0 0 10px #0cf; }
+        .shuffle-btn, .share-btn, .copy-all-btn {
+            background: rgba(0,188,212,0.15);
+            border: 1.5px solid #0cf;
+            color: #b0f0ff;
+            border-radius: 40px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .shuffle-btn:hover, .share-btn:hover, .copy-all-btn:hover {
+            background: #0cf3;
+            box-shadow: 0 0 15px cyan;
+        }
+        .quiz-question-card { padding: 28px; margin-bottom: 28px; }
+        .question-text { font-size: 1.5rem; font-weight: 600; margin-bottom: 28px; }
+        .options-list { display: flex; flex-direction: column; gap: 14px; }
+        .option-item {
+            background: rgba(0,30,45,0.5); border: 1.5px solid #1e6a7a; border-radius: 60px;
+            padding: 16px 22px; font-size: 1.15rem; cursor: pointer; display: flex; align-items: center; gap: 14px;
+        }
+        .option-item.selected-option { border: 2px solid #0cf; background: #11576b; }
+        .option-item.correct-answer { background: #0b4b3c; border-color: #00e676; }
+        .option-item.wrong-answer { background: #6b1e2b; border-color: #ff5252; }
+        .primary-btn {
+            background: rgba(0,188,212,0.2); border: 2px solid #0cf; color: #e1f7ff;
+            padding: 16px 38px; border-radius: 60px; font-weight: 700; font-size: 1.2rem;
+            backdrop-filter: blur(8px); cursor: pointer; box-shadow: 0 0 15px #00bcd4;
+        }
+        .primary-btn:disabled { opacity: 0.3; box-shadow: none; }
+        .result-card { padding: 40px; text-align: center; }
+        .score { font-size: 5rem; font-weight: 800; background: linear-gradient(145deg, #b0f0ff, #4dd0e1); -webkit-background-clip: text; color: transparent; }
+        .hidden { display: none !important; }
+        .feedback-message { margin: 20px 0 10px; font-size: 1.2rem; }
+        .stats-badge {
+            background: #0a3340;
+            border-radius: 40px;
+            padding: 8px 18px;
+            border: 1px solid #0cf;
+            display: inline-block;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #7ab7c9;
+            border-top: 1px solid #1e4a5e;
+            padding-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .footer a {
+            color: #8ed3e8;
+            text-decoration: none;
+        }
+        .action-buttons-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 600px) { h1 { font-size: 1.6rem; } }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="main-content">
+        <div class="app-header">
+            <h1><i class="fas fa-capsules" style="color:#0cf;"></i> Pharmacology</h1>
+            <div class="mode-toggle" id="modeToggle">
+                <button class="mode-btn active" data-mode="quiz"><i class="fas fa-pen-to-square"></i> Quiz</button>
+                <button class="mode-btn" data-mode="study"><i class="fas fa-book-open"></i> Study</button>
+            </div>
+        </div>
+        <div id="sheetsView">
+            <div class="glass-card">
+                <h2 style="margin-bottom:24px"><i class="fas fa-layer-group" style="color:#0cf;"></i> Sheets</h2>
+                <div id="sheetsContainer" class="sheets-grid"></div>
+            </div>
+        </div>
+        <div id="quizStudyView" class="view-container hidden">
+            <button class="back-btn" id="backToSheetsBtn"><i class="fas fa-arrow-left"></i> Back to Sheets</button>
+            <div id="dynamicContent"></div>
+        </div>
+    </div>
+    <div class="footer">
+        <span><i class="fas fa-user-graduate"></i> Prepared by Taha Cabello</span>
+        <span><i class="fab fa-telegram"></i> Telegram: <a href="https://t.me/zik0d" target="_blank">@zik0d</a></span>
+    </div>
+</div>
+<script>
+    (function(){
+        // ---------- Pharmacology Database (3 Sheets) ----------
+        const sheets = [
+            { id: 'ans', name: 'Autonomic nerve system', questions: [] },
+            { id: 'hist', name: 'Autonomic nerve system (Histamine and Histamine)', questions: [] },
+            { id: 'antimicrobial', name: 'Antimicrobial agent', questions: [] }
+        ];
+
+        // Helper to add questions
+        function addQ(sheetId, qArray) {
+            const sheet = sheets.find(s => s.id === sheetId);
+            if(sheet) sheet.questions.push(...qArray);
+        }
+
+        // ========== Autonomic nerve system (28 questions) ==========
+        addQ('ans', [
+            { text: '1. Nicotine:', options: ['Block neuromuscular junction', 'Block autonomic ganglia', 'Prolong depolarizing', '(b + c)'], correct: 1 },
+            { text: '2. Isoprenaline is used to:', options: ['Cardiac arrest', 'Symptomatic heart block', 'Asthma', 'Hypertension'], correct: 1 },
+            { text: '3. α2 selective agonist:', options: ['Decrease NA', 'Vasoconstriction', '(a + b)', 'Increase ACh'], correct: 0 },
+            { text: '4. Suxamethonium:', options: ['Long action', 'Depolarizing', 'Decrease intraocular pressure', 'Cause tachycardia'], correct: 1 },
+            { text: '5. Tyrosine converted to DOPA by:', options: ['Dopa decarboxylase', 'Tyrosine hydroxylase', 'Dopamine β-hydroxylase', 'Tyrosine decarboxylase'], correct: 1 },
+            { text: '6. Propranolol is:', options: ['β1 antagonist', 'β2 antagonist', '(a + b)', '—'], correct: 2 },
+            { text: '7. Auto-inhibitory feedback of noradrenaline is mediated by:', options: ['α1-receptors', 'α2-receptors', 'β1-receptors', 'β2-receptors'], correct: 1 },
+            { text: '8. Dopamine is:', options: ['Selective α1', 'Mixed acting', 'Selective α2', 'Selective β1'], correct: 1 },
+            { text: '9. Phentolamine is:', options: ['Irreversible acting', 'Block α1-receptors', 'Block α2-receptors', 'Increase B.P'], correct: 1 },
+            { text: '10. Guanethidine is:', options: ['Block N.A release', 'Block carrier system', 'Block uptake of N.A', 'Increase B.P'], correct: 0 },
+            { text: '11. Suxamethonium:', options: ['Initial fasciculation', 'Long acting', 'Tachycardia', '—'], correct: 0 },
+            { text: '12. Atenolol:', options: ['Selective β1', 'Selective β2', 'Increase NA release', 'Decrease NA release'], correct: 0 },
+            { text: '13. Pheochromocytoma is management by:', options: ['Phenoxybenzamine', 'Phentolamine', 'Adrenaline', 'Dopamine'], correct: 0 },
+            { text: '14. Noradrenaline is synthesized from:', options: ['Cytosine', 'L-Tyrosine', 'Alanine', '—'], correct: 1 },
+            { text: '15. Cocaine:', options: ['Bradycardia', 'Increase blood pressure', 'Increase NA', 'Stimulation NA'], correct: 1 },
+            { text: '16. Used mainly in asthma:', options: ['Dopamine', 'Salbutamol', 'Clonidine', '—'], correct: 1 },
+            { text: '17. Dobutamine:', options: ['α1', 'α2', 'β1', 'β2'], correct: 2 },
+            { text: '18. Pheochromocytoma management:', options: ['Phenoxybenzamine', 'Phentolamine', 'Adrenaline', 'Dopamine'], correct: 0 },
+            { text: '19. A drug that inhibits the uptake of NA:', options: ['Reserpine', 'Guanethidine', 'Labetalol', 'Cocaine'], correct: 3 },
+            { text: '20. Dopamine converted to Noradrenaline by:', options: ['Dopamine decarboxylase', 'Tyrosine hydroxylase', 'Dopamine β-hydroxylase', '—'], correct: 2 },
+            { text: '21. Idazoxan:', options: ['Cause vasodilation', 'Inhibit NA release', 'Used clinically', 'Increase B.P'], correct: 3 },
+            { text: '22. Hypertensive patients with impaired pulmonary functions:', options: ['Atenolol', 'Pindolol', 'Labetolol', '(A & B)'], correct: 0 },
+            { text: '23. All the following drugs interfere with ACh release except:', options: ['Magnesium ions', 'Hemicholinium', 'Hexamethonium', 'Botulinum toxin'], correct: 2 },
+            { text: '24. Atracurium is:', options: ['Depolarizing blocker', 'Skeletal muscle contraction', 'Competitive antagonist', 'Irreversible by anti-ChE'], correct: 2 },
+            { text: '25. Dopa converted to Dopamine by:', options: ['Dopa hydroxylase', 'L-Tyrosine', 'Dopa decarboxylase', 'Dopa oxidase'], correct: 2 },
+            { text: '26. Auto-inhibitory feedback mechanism mediated by:', options: ['α1', 'β1', 'β2', 'α2'], correct: 3 },
+            { text: '27. Salbutamol is:', options: ['α1-agonist', 'α2-agonist', 'β1-agonist', 'β2-agonist'], correct: 3 },
+            { text: '28. Drug used for treating pregnancy-induced hypertension is:', options: ['Pindolol', 'Acebutolol', 'Metoprolol', 'Labetolol'], correct: 3 }
+        ]);
+
+        // ========== Histamine (24 questions) ==========
+        addQ('hist', [
+            { text: '1. Histamine is metabolized by:', options: ['Histamylase', 'Histaminase', 'Histamine hydroxylase', 'Histamine decarboxylase'], correct: 1 },
+            { text: '2. Wheal is:', options: ['Intense capillary dilatation', 'Fluid capillary exudation', 'Arteriolar dilatation', 'None'], correct: 1 },
+            { text: '3. Fexofenadine is:', options: ['High sedation', 'Least sedation', 'Antiemetic', '(b – c)'], correct: 1 },
+            { text: '4. Cimetidine retards absorption of:', options: ['Theophylline', 'Ketoconazole', 'Warfarin', 'All'], correct: 1 },
+            { text: '5. H1-antihistaminics are:', options: ['Less orally absorbed', 'Long duration', 'Biliary excretion', 'None'], correct: 3 },
+            { text: '6. H1-antihistaminics are:', options: ['Produce vomiting', 'Produce nausea', 'Produce allergy', 'None'], correct: 3 },
+            { text: '7. At cellular level histamine is large in:', options: ['Lung', 'Skin', 'GIT', 'Mast cells'], correct: 3 },
+            { text: '8. Tubocurarine causes:', options: ['Increase histamine release', 'Decrease histamine release', 'Allergy', '(a + c)'], correct: 3 },
+            { text: '9. Red spot is:', options: ['Hotness', 'Axon reflex', 'Arteriolar dilatation', 'None'], correct: 2 },
+            { text: '10. Increase gastric secretion mediated by:', options: ['H1-blocker', 'H2-blocker', 'H1-agonist', 'None'], correct: 3 },
+            { text: '11. Dimenhydrinate is:', options: ['Antimotion', 'Antiemetic', 'Sedative', 'All'], correct: 3 },
+            { text: '12. H1-blocker side effects are:', options: ['Allergy', 'Urticaria', 'Headache', 'Drowsiness'], correct: 3 },
+            { text: '13. Triple response is due to:', options: ['Allergy', 'Histamine', 'Tissue injury', 'Exocytosis'], correct: 1 },
+            { text: '14. Triple response is blocked by:', options: ['H1 blocker', 'H2 blocker', '(a + b)', 'None'], correct: 0 },
+            { text: '15. Promethazine causes:', options: ['Antiemetic', 'Antimotion sickness', 'Anaesthetic effect', 'All of the above'], correct: 0 },
+            { text: '16. Histamine decarboxylase is responsible for:', options: ['Synthesis of histamine', 'Metabolism of histamine', 'Excretion of histamine', 'Storage of histamine'], correct: 0 },
+            { text: '17. Loratadine is a:', options: ['H1 agonist', 'H1 antagonist', 'H2 agonist', 'H2 antagonist'], correct: 1 },
+            { text: '18. Histamine 1 agonist causes:', options: ['Vasodilatation', 'Anaesthetic', 'Contraction of non vasculature', 'All of the above'], correct: 3 },
+            { text: '19. Morphine causes:', options: ['Increase histamine release', 'Decrease histamine release', '(A & B)', 'Allergic'], correct: 0 },
+            { text: '20. At tissue level histamine is large in:', options: ['Mast cell', 'Basophil', 'Lung', '(A & B)'], correct: 2 },
+            { text: '21. Release of histamine causes:', options: ['Relaxation of vasculature', '—', '—', '—'], correct: 0 },
+            { text: '22. Flare is:', options: ['Arteriolar dilatation', 'Capillary dilatation', 'Fluid exudation', 'None'], correct: 0 },
+            { text: '23. Antitussive by:', options: ['Antazoline', 'Chlorpheniramine', 'Promethazine', 'Histamine'], correct: 1 },
+            { text: '24. Pre-anaesthesia by:', options: ['Histamine', 'H1-agonist', 'H2-antagonist', 'None'], correct: 3 }
+        ]);
+
+        // ========== Antimicrobial agent (28 questions) ==========
+        addQ('antimicrobial', [
+            { text: '1. Drug used for pseudomembranous colitis is:', options: ['Penicillin', 'Cephalosporins', 'Vancomycin', 'All'], correct: 2 },
+            { text: '2. Drug show abnormal liver function test is:', options: ['Aztreonam', 'Clindamycin', 'Penicillin', '(a–b)'], correct: 0 },
+            { text: '3. Cilastatin is combined with:', options: ['Aztreonam', 'Sulphonamide', 'Cephalosporins', 'None'], correct: 3 },
+            { text: '4. Cefoperazone is:', options: ['First generation cephalosporins', 'Third generation cephalosporins', 'Second generation cephalosporins', 'Fourth generation cephalosporins'], correct: 1 },
+            { text: '5. Super-infection caused by:', options: ['Sulphonamides', 'Penicillin', 'Trimethoprim', '(b–c)'], correct: 1 },
+            { text: '6. Probenecid is:', options: ['Decrease penicillin action', 'Increase penicillin action', 'Stimulate secretion', '(b–c)'], correct: 1 },
+            { text: '7. Bacterial resistance of erythromycin by:', options: ['Decrease drug accumulation', 'Enzymes production', 'Alternative pathway', 'Alteration drug binding site'], correct: 3 },
+            { text: '8. Sulphadiazine is:', options: ['Short acting', 'Long acting', 'Less GIT absorption', '(a–c)'], correct: 0 },
+            { text: '9. Trimethoprim is:', options: ['Less tissues distributed', 'Fully GIT absorption', 'Weak acid', '(b–c)'], correct: 1 },
+            { text: '10. Clavulanic acid is:', options: ['Increase penicillin resistance', 'Increase β-lactamase action', 'Decrease penicillin action', 'None'], correct: 3 },
+            { text: '11. Cephalexin is:', options: ['First generation cephalosporins', 'Third generation cephalosporins', 'Second generation cephalosporins', 'Fourth generation cephalosporins'], correct: 0 },
+            { text: '12. Imipenem is:', options: ['Broad spectrum', 'Very broad spectrum', 'Given orally', '(b–c)'], correct: 1 },
+            { text: '13. β-lactamase:', options: ['Increase cephalosporins action', 'Increase penicillin action', 'Decrease tetracycline action', 'None'], correct: 3 },
+            { text: '14. Drug inhibit protein synthesis:', options: ['Vancomycin', 'Clindamycin', 'Trimethoprim', 'All'], correct: 1 },
+            { text: '15. Sulphasalazine:', options: ['Well absorption', 'Poor absorption', 'β-lactamase inhibitors', '(b–c)'], correct: 1 },
+            { text: '16. Drug used for Pneumocystis carinii pneumonia:', options: ['Sulphamethoxazole', 'Trimethoprim', 'Penicillin', 'Co-trimoxazole'], correct: 3 },
+            { text: '17. Tazobactam:', options: ['Folate synthesis inhibitors', 'β-lactamase inhibitors', 'Protein synthesis inhibitors', 'None'], correct: 1 },
+            { text: '18. Cefazolin:', options: ['Second generation cephalosporin', 'First generation cephalosporin', 'Third generation cephalosporin', 'Fourth generation cephalosporin'], correct: 1 },
+            { text: '19. Patient allergic to penicillin can be used:', options: ['Cephalosporins', 'Vancomycin', 'Aminoglycosides', 'None'], correct: 1 },
+            { text: '20. Drug used for H. influenza is:', options: ['Aztreonam', 'Clavulanate', 'Penicillins', 'All'], correct: 0 },
+            { text: '21. Drug crosses BBB and good for meningitis is:', options: ['Penicillins', 'Ceftriaxone', 'Cefepime', 'None'], correct: 1 },
+            { text: '22. Cefuroxime is:', options: ['Second generation cephalosporins', 'Third generation cephalosporins', 'First generation cephalosporins', 'Fourth generation cephalosporins'], correct: 0 },
+            { text: '23. Imipenem is:', options: ['Given orally', 'Given intravenously', 'Given topically', 'Given intramuscularly only'], correct: 1 },
+            { text: '24. Cephalosporins are:', options: ['Protein synthesis inhibitors', 'β-lactam antibiotics closely related to penicillins', 'Folate synthesis inhibitors', 'Nucleic acid inhibitors'], correct: 1 },
+            { text: '25. Drug crosses BBB and used for meningitis:', options: ['Ceftriaxone', 'Cephalexin', 'Cefazolin', 'Penicillin V'], correct: 0 },
+            { text: '26. Vancomycin is important because it is effective against:', options: ['Viral infections', 'Methicillin-resistant staphylococci', 'Fungal infections', 'Protozoa'], correct: 1 },
+            { text: '27. Nafcillin can be given in renal failure because:', options: ['Excreted mainly by kidney', 'Excreted mainly in bile', 'Not metabolized', 'Given orally only'], correct: 1 },
+            { text: '28. Third generation cephalosporins include:', options: ['Cefuroxime', 'Cephalexin', 'Ceftazidime', 'Cefazolin'], correct: 2 }
+        ]);
+
+        // ---------- App State ----------
+        let currentMode = 'quiz';
+        let currentSheetId = null;
+        let currentQuestions = [];
+        let quizState = {
+            currentIndex: 0,
+            userAnswers: [],
+            answerConfirmed: false,
+            selectedOption: null,
+            quizFinished: false,
+            score: 0
+        };
+
+        const sheetsView = document.getElementById('sheetsView');
+        const quizStudyView = document.getElementById('quizStudyView');
+        const dynamicContent = document.getElementById('dynamicContent');
+        const sheetsContainer = document.getElementById('sheetsContainer');
+        const modeBtns = document.querySelectorAll('.mode-btn');
+        const backBtn = document.getElementById('backToSheetsBtn');
+
+        function renderSheets() {
+            sheetsContainer.innerHTML = '';
+            sheets.forEach(sheet => {
+                const card = document.createElement('div');
+                card.className = 'sheet-card';
+                card.dataset.sheetId = sheet.id;
+                card.innerHTML = `<div class="sheet-title"><i class="fas fa-folder-open"></i> ${sheet.name}</div>
+                                  <div><i class="fas fa-circle-question"></i> ${sheet.questions.length} Questions</div>`;
+                card.addEventListener('click', () => selectSheet(sheet.id));
+                sheetsContainer.appendChild(card);
+            });
+        }
+
+        function selectSheet(sheetId) {
+            const sheet = sheets.find(s => s.id === sheetId);
+            if(!sheet) return;
+            currentSheetId = sheetId;
+            currentQuestions = [...sheet.questions];
+            resetQuizState();
+            sheetsView.classList.add('hidden');
+            quizStudyView.classList.remove('hidden');
+            if(currentMode === 'quiz') renderQuizView();
+            else renderStudyView();
+        }
+
+        function resetQuizState() {
+            quizState = {
+                currentIndex: 0,
+                userAnswers: new Array(currentQuestions.length).fill(null).map(() => ({ selected: null, isCorrect: false })),
+                answerConfirmed: false,
+                selectedOption: null,
+                quizFinished: false,
+                score: 0
+            };
+        }
+
+        function backToSheets() {
+            sheetsView.classList.remove('hidden');
+            quizStudyView.classList.add('hidden');
+            currentSheetId = null;
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            modeBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
+            if(currentSheetId) {
+                resetQuizState();
+                if(mode === 'quiz') renderQuizView();
+                else renderStudyView();
+            }
+        }
+
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function shuffleQuestions() {
+            if(currentMode !== 'quiz' || quizState.quizFinished) return;
+            const currentAnswers = quizState.userAnswers;
+            const paired = currentQuestions.map((q, idx) => ({ question: q, answer: currentAnswers[idx] }));
+            shuffleArray(paired);
+            currentQuestions = paired.map(p => p.question);
+            quizState.userAnswers = paired.map(p => p.answer);
+            quizState.currentIndex = 0;
+            quizState.answerConfirmed = false;
+            quizState.selectedOption = null;
+            renderQuizView();
+        }
+
+        function shareCurrentQuestion() {
+            if (!currentQuestions.length) return;
+            const q = currentQuestions[quizState.currentIndex];
+            const sheetName = sheets.find(s => s.id === currentSheetId)?.name || '';
+            const correctLetter = String.fromCharCode(65 + q.correct);
+            let text = `💊 *Pharmacology - ${sheetName}*\n\n`;
+            text += `❓ *Question:* ${q.text}\n\n`;
+            q.options.forEach((opt, i) => {
+                text += `${String.fromCharCode(65+i)}) ${opt}\n`;
+            });
+            text += `\n✅ *Correct Answer:* ${correctLetter}. ${q.options[q.correct]}\n\n`;
+            text += `📩 Shared by @zik0d - Prepared by Taha Cabello`;
+            
+            navigator.clipboard?.writeText(text.replace(/\*/g, '')).then(() => {
+                alert('✅ Question copied. You can paste it in Telegram.');
+            }).catch(() => {
+                alert('📋 Text ready:\n\n' + text);
+            });
+            window.open(`https://t.me/zik0d`, '_blank');
+        }
+
+        function copyAllStudyQuestions() {
+            if (!currentQuestions.length) return;
+            const sheetName = sheets.find(s => s.id === currentSheetId)?.name || '';
+            let text = `💊 *Pharmacology - ${sheetName}* - All Questions\n`;
+            text += `Prepared by Taha Cabello (@zik0d)\n\n`;
+            currentQuestions.forEach((q, idx) => {
+                const correctLetter = String.fromCharCode(65 + q.correct);
+                text += `🔹 ${idx+1}. ${q.text}\n`;
+                q.options.forEach((opt, i) => {
+                    text += `   ${String.fromCharCode(65+i)}) ${opt}\n`;
+                });
+                text += `   ✅ Answer: ${correctLetter}. ${q.options[q.correct]}\n\n`;
+            });
+            navigator.clipboard?.writeText(text.replace(/\*/g, '')).then(() => {
+                alert('✅ All questions copied.');
+            }).catch(() => {
+                alert('Copy failed. Text logged to console.');
+                console.log(text);
+            });
+        }
+
+        function renderQuizView() {
+            if(!currentQuestions.length) { dynamicContent.innerHTML = '<p>No questions found.</p>'; return; }
+            if(quizState.quizFinished) { renderQuizResult(); return; }
+            const q = currentQuestions[quizState.currentIndex];
+            const progress = ((quizState.currentIndex) / currentQuestions.length) * 100;
+            const ans = quizState.userAnswers[quizState.currentIndex];
+            const confirmed = ans.selected !== null;
+            const correctCount = quizState.userAnswers.filter(a => a.isCorrect).length;
+            
+            let optsHtml = '';
+            q.options.forEach((opt, idx) => {
+                let cls = '';
+                if(confirmed) {
+                    if(idx === q.correct) cls = 'correct-answer';
+                    else if(idx === ans.selected) cls = 'wrong-answer';
+                } else if(quizState.selectedOption === idx) cls = 'selected-option';
+                optsHtml += `<div class="option-item ${cls}" data-opt-index="${idx}"><span class="option-prefix">${String.fromCharCode(65+idx)}</span> ${opt}</div>`;
+            });
+
+            let actionButtonHtml = '';
+            let feedbackHtml = '';
+            if(!confirmed) {
+                actionButtonHtml = `<button class="primary-btn" id="verifyAnswerBtn" ${quizState.selectedOption === null ? 'disabled' : ''}><i class="fas fa-check-circle"></i> Check Answer</button>`;
+            } else {
+                const isCorrect = ans.isCorrect;
+                const correctLetter = String.fromCharCode(65 + q.correct);
+                feedbackHtml = `<div class="feedback-message" style="color: ${isCorrect ? '#00e676' : '#ff5252'};">
+                    <i class="fas ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i> 
+                    ${isCorrect ? 'Correct!' : `Incorrect. The correct answer is ${correctLetter}. ${q.options[q.correct]}`}
+                </div>`;
+                actionButtonHtml = `<button class="primary-btn" id="nextQuestionBtn"><i class="fas fa-arrow-right"></i> Next Question</button>`;
+            }
+
+            dynamicContent.innerHTML = `
+                <div class="progress-section">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span>Question ${quizState.currentIndex+1}/${currentQuestions.length}</span>
+                        <span class="stats-badge"><i class="fas fa-check"></i> ${correctCount} / ${currentQuestions.length}</span>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button class="shuffle-btn" id="shuffleQuestionsBtn"><i class="fas fa-shuffle"></i> Shuffle</button>
+                        <button class="share-btn" id="shareQuestionBtn"><i class="fab fa-telegram"></i> Share</button>
+                    </div>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-fill" style="width:${progress}%"></div></div>
+                <div class="quiz-question-card glass-card" style="margin-top:20px;">
+                    <div class="question-text">${q.text}</div>
+                    <div class="options-list" id="optionsContainer">${optsHtml}</div>
+                    ${feedbackHtml}
+                    <div class="next-btn-wrapper">${actionButtonHtml}</div>
+                </div>`;
+
+            const optsDivs = document.querySelectorAll('.option-item');
+            const shuffleBtn = document.getElementById('shuffleQuestionsBtn');
+            const shareBtn = document.getElementById('shareQuestionBtn');
+            if(shuffleBtn) shuffleBtn.addEventListener('click', shuffleQuestions);
+            if(shareBtn) shareBtn.addEventListener('click', shareCurrentQuestion);
+            
+            if(!confirmed) {
+                optsDivs.forEach(opt => {
+                    opt.addEventListener('click', () => {
+                        if(quizState.answerConfirmed) return;
+                        const idx = parseInt(opt.dataset.optIndex);
+                        quizState.selectedOption = idx;
+                        optsDivs.forEach(el => el.classList.remove('selected-option'));
+                        opt.classList.add('selected-option');
+                        document.getElementById('verifyAnswerBtn').disabled = false;
+                    });
+                });
+
+                document.getElementById('verifyAnswerBtn').addEventListener('click', () => {
+                    if(quizState.selectedOption === null) return;
+                    const isCorrect = (quizState.selectedOption === q.correct);
+                    quizState.userAnswers[quizState.currentIndex] = { selected: quizState.selectedOption, isCorrect };
+                    quizState.answerConfirmed = true;
+                    quizState.score = quizState.userAnswers.filter(a => a.isCorrect).length;
+                    renderQuizView();
+                });
+            } else {
+                optsDivs.forEach(opt => opt.style.pointerEvents = 'none');
+                document.getElementById('nextQuestionBtn').addEventListener('click', () => {
+                    if(quizState.currentIndex + 1 < currentQuestions.length) {
+                        quizState.currentIndex++;
+                        quizState.answerConfirmed = false;
+                        quizState.selectedOption = null;
+                        renderQuizView();
+                    } else {
+                        quizState.quizFinished = true;
+                        renderQuizResult();
+                    }
+                });
+            }
+        }
+
+        function renderQuizResult() {
+            const correct = quizState.userAnswers.filter(a => a.isCorrect).length;
+            const total = currentQuestions.length;
+            const percent = Math.round((correct/total)*100);
+            let message = percent>=80 ? '🌟 Excellent!' : percent>=50 ? '👍 Good job, keep reviewing.' : '📚 More practice needed.';
+            dynamicContent.innerHTML = `<div class="result-card glass-card">
+                <i class="fas fa-trophy" style="font-size:4rem;color:gold;"></i><h2>Quiz Finished</h2>
+                <div class="score">${correct}/${total}</div>
+                <div style="font-size:2rem; margin:10px 0;">${percent}%</div>
+                <div style="margin-bottom:30px;">${message}</div>
+                <div class="action-buttons-group">
+                    <button class="primary-btn" id="retakeQuizBtn"><i class="fas fa-rotate-right"></i> Retake</button>
+                    <button class="primary-btn" id="reviewMistakesBtn"><i class="fas fa-list-check"></i> Review Mistakes</button>
+                </div>
+            </div>`;
+            document.getElementById('retakeQuizBtn').addEventListener('click', ()=>{ resetQuizState(); renderQuizView(); });
+            document.getElementById('reviewMistakesBtn').addEventListener('click', ()=>{ renderReviewMistakes(); });
+        }
+
+        function renderReviewMistakes() {
+            const mistakes = currentQuestions.filter((q,i) => quizState.userAnswers[i] && !quizState.userAnswers[i].isCorrect);
+            if(!mistakes.length) { dynamicContent.innerHTML = '<div class="glass-card" style="padding:30px">🎉 No mistakes!</div>'; return; }
+            let html = `<h2>Review Mistakes (${mistakes.length})</h2>`;
+            mistakes.forEach((q) => {
+                const idx = currentQuestions.indexOf(q);
+                const user = quizState.userAnswers[idx].selected;
+                html += `<div class="review-item glass-card"><div class="question-text">${q.text}</div><div class="user-wrong">Your answer: ${q.options[user]}</div><div style="color:#0f0">Correct: ${q.options[q.correct]}</div></div>`;
+            });
+            dynamicContent.innerHTML = html;
+        }
+
+        function renderStudyView() {
+            const sheet = sheets.find(s=>s.id===currentSheetId);
+            let html = `<div style="display:flex; justify-content:space-between; align-items:center;"><h2>${sheet?.name}</h2>`;
+            html += `<button class="copy-all-btn" id="copyAllStudyBtn"><i class="fas fa-copy"></i> Copy All Questions</button></div>`;
+            currentQuestions.forEach((q,i) => {
+                html += `<div class="study-question-item glass-card"><div class="question-text">${i+1}. ${q.text}</div><div class="options-list">`;
+                q.options.forEach((opt, optIdx) => { 
+                    html += `<div class="option-item" style="pointer-events:none;${optIdx===q.correct?'border-color:#0f0;background:#0a4b3c;':''}"><span class="option-prefix">${String.fromCharCode(65+optIdx)}</span> ${opt}</div>`; 
+                });
+                html += `</div><div class="correct-indicator"><i class="fas fa-check-circle"></i> ${String.fromCharCode(65+q.correct)}. ${q.options[q.correct]}</div></div>`;
+            });
+            dynamicContent.innerHTML = html;
+            document.getElementById('copyAllStudyBtn')?.addEventListener('click', copyAllStudyQuestions);
+        }
+
+        modeBtns.forEach(btn => btn.addEventListener('click', e => setMode(btn.dataset.mode)));
+        backBtn.addEventListener('click', backToSheets);
+        renderSheets();
+        setMode('quiz');
+    })();
+</script>
+</body>
+</html>
