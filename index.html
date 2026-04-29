@@ -1342,6 +1342,151 @@
         .strip-dot.red    { background: var(--error); }
         .strip-dot.orange { background: #ff9800; }
         .strip-dot.grey   { background: rgba(255,255,255,.2); }
+        /* ============================================================
+           WELCOME SCREEN
+        ============================================================ */
+        .welcome-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: var(--r-2xl);
+            padding: var(--s10) var(--s8);
+            max-width: 420px;
+            width: 92%;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            animation: slide-up var(--t-slow) var(--ease) both;
+        }
+
+        .welcome-pill {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #000;
+            font-weight: 800;
+            font-size: .78rem;
+            letter-spacing: .5px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-bottom: var(--s5);
+        }
+
+        .welcome-emoji {
+            display: flex;
+            justify-content: center;
+            margin-bottom: var(--s4);
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 8px 24px rgba(155, 114, 207, 0.5));
+        }
+        @keyframes float {
+            0%,100% { transform: translateY(0); }
+            50%      { transform: translateY(-8px); }
+        }
+
+        .welcome-title {
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -.5px;
+            margin-bottom: var(--s2);
+        }
+
+        .welcome-sub {
+            color: var(--text-muted);
+            font-size: .88rem;
+            line-height: 1.6;
+            margin-bottom: var(--s6);
+        }
+
+        .welcome-input-wrap {
+            position: relative;
+            margin-bottom: var(--s4);
+        }
+
+        .welcome-input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: .85rem;
+            pointer-events: none;
+        }
+
+        .welcome-input {
+            width: 100%;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: var(--r-md);
+            padding: 14px 14px 14px 40px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 600;
+            outline: none;
+            -webkit-appearance: none;
+            text-align: left;
+            transition: border-color var(--t-fast) var(--ease),
+                        box-shadow   var(--t-fast) var(--ease);
+        }
+        .welcome-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-dim);
+        }
+        .welcome-input::placeholder { color: var(--text-muted); font-weight: 400; }
+
+        .welcome-btn {
+            width: 100%;
+            padding: var(--s4) var(--s6);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #000;
+            border: none;
+            border-radius: var(--r-md);
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            letter-spacing: .3px;
+            margin-bottom: var(--s4);
+            box-shadow: var(--shadow-primary);
+            transition: opacity var(--t-fast) var(--ease),
+                        transform var(--t-fast) var(--ease-spring);
+        }
+        .welcome-btn:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .welcome-btn:not(:disabled):hover  { opacity: .9; transform: translateY(-1px); }
+        .welcome-btn:not(:disabled):active { transform: scale(.97); }
+
+        .welcome-note {
+            color: var(--text-muted);
+            font-size: .75rem;
+            opacity: .7;
+        }
+
+        /* ============================================================
+           USER CHIP
+        ============================================================ */
+        .user-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-dim);
+            border: 1px solid var(--border-focus);
+            border-radius: var(--r-md);
+            padding: 7px 12px;
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--primary);
+            flex-shrink: 0;
+            max-width: 120px;
+            overflow: hidden;
+        }
+        .user-chip span {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
     </style>
 </head>
 <body>
@@ -1391,12 +1536,6 @@
                     <!-- tabindex="-1" prevents keyboard opening automatically on mobile -->
                 </div>
 
-                <!-- Question-type selector -->
-                <div class="type-toggle" role="group" aria-label="Question type">
-                    <button id="type-year" class="type-opt"       onclick="setQuestionType('year')" aria-pressed="false">Years</button>
-                    <button id="type-quiz" class="type-opt active" onclick="setQuestionType('quiz')" aria-pressed="true">Quizzes</button>
-                </div>
-
                 <!-- App-mode selector -->
                 <div class="mode-toggle" role="group" aria-label="Mode">
                     <button id="mode-quiz"  class="mode-opt active" onclick="setAppMode('quiz')"  aria-pressed="true">Quiz</button>
@@ -1409,6 +1548,19 @@
                         aria-label="Saved Questions"
                         title="Saved Questions">
                     <i class="fas fa-bookmark" aria-hidden="true"></i>
+                </button>
+
+                <!-- User greeting + logout -->
+                <div id="user-chip" class="user-chip" title="Logged in as…">
+                    <i class="fas fa-user-circle" aria-hidden="true"></i>
+                    <span id="user-name-display"></span>
+                </div>
+                <button class="control-btn"
+                        onclick="logout()"
+                        aria-label="Sign out"
+                        title="Sign Out / Switch User"
+                        style="color:var(--error);border-color:rgba(255,82,82,.25);">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
                 </button>
 
                 <!-- Shuffle -->
@@ -1447,7 +1599,7 @@
                     <h1 class="section-title">
                         Welcome to <span class="text-primary">Pharmacology</span> Quiz!
                     </h1>
-                    <p class="section-subtitle">Select a section to start your review.</p>
+                    <p class="section-subtitle">Select a section, then choose Quizzes or Years.</p>
                 </div>
                 <div style="text-align:right; flex-shrink:0;">
                     <div id="global-percent" aria-label="Overall mastery percentage">0%</div>
@@ -1459,6 +1611,86 @@
                 <!-- Dynamically injected by JS -->
             </div>
         </main>
+
+        <!-- ── WELCOME / LOGIN SCREEN ────────────────────────── -->
+        <div id="welcome-screen" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="welcome-heading">
+            <div class="welcome-card">
+                <div class="welcome-pill">💊 Pharma Pro</div>
+                <div class="welcome-emoji">
+                    <svg width="90" height="110" viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Body -->
+                        <rect x="28" y="48" width="34" height="55" rx="17" fill="#9b72cf"/>
+                        <!-- Head -->
+                        <ellipse cx="45" cy="42" rx="26" ry="28" fill="#9b72cf"/>
+                        <!-- Left eye white -->
+                        <ellipse cx="36" cy="38" rx="8" ry="9" fill="white"/>
+                        <!-- Right eye white -->
+                        <ellipse cx="54" cy="38" rx="8" ry="9" fill="white"/>
+                        <!-- Left pupil -->
+                        <ellipse cx="37" cy="39" rx="4" ry="5" fill="#1a1a2e"/>
+                        <!-- Right pupil -->
+                        <ellipse cx="55" cy="39" rx="4" ry="5" fill="#1a1a2e"/>
+                        <!-- Left eye shine -->
+                        <ellipse cx="35" cy="36" rx="1.5" ry="1.8" fill="white"/>
+                        <!-- Right eye shine -->
+                        <ellipse cx="53" cy="36" rx="1.5" ry="1.8" fill="white"/>
+                        <!-- Smile -->
+                        <path d="M37 54 Q45 60 53 54" stroke="#7a4fa3" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <!-- Left arm -->
+                        <ellipse cx="18" cy="72" rx="9" ry="5" rx="9" ry="5" transform="rotate(-30 18 72)" fill="#9b72cf"/>
+                        <!-- Right arm -->
+                        <ellipse cx="72" cy="72" rx="9" ry="5" transform="rotate(30 72 72)" fill="#9b72cf"/>
+                    </svg>
+                </div>
+                <h1 id="welcome-heading" class="welcome-title">Welcome Back!</h1>
+                <p class="welcome-sub">Enter your name to track your progress and mastery across all topics.</p>
+                <div class="welcome-input-wrap">
+                    <i class="fas fa-user welcome-input-icon" aria-hidden="true"></i>
+                    <input
+                        id="name-input"
+                        type="text"
+                        class="welcome-input"
+                        placeholder="Your name…"
+                        maxlength="32"
+                        autocomplete="name"
+                        oninput="onNameInput()"
+                        onkeydown="if(event.key==='Enter')submitName()"
+                        aria-label="Enter your name"
+                    >
+                </div>
+                <button id="start-btn" class="welcome-btn" onclick="submitName()" disabled>
+                    <i class="fas fa-arrow-right" aria-hidden="true"></i> Let's Go!
+                </button>
+                <p class="welcome-note"><i class="fas fa-lock" aria-hidden="true"></i> Saved locally on your device only</p>
+            </div>
+        </div>
+
+        <!-- ── TYPE SELECTION OVERLAY ─────────────────────── -->
+        <div id="type-select-overlay"
+             class="overlay hidden"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="type-select-heading"
+             onclick="if(event.target===this)closeTypeSelect()">
+            <div class="stats-modal" style="max-width:420px;">
+                <div style="font-size:2.2rem;margin-bottom:var(--s3);text-align:center;">📚</div>
+                <h2 id="type-select-heading" class="stats-title" style="margin-bottom:var(--s2);">Choose Question Type</h2>
+                <p id="type-select-sheet-name" style="color:var(--primary);font-size:1rem;font-weight:700;text-align:center;margin-bottom:var(--s6);"></p>
+                <div style="display:grid;gap:var(--s4);">
+                    <button class="primary-btn" onclick="selectTypeAndStart('quiz')" style="font-size:1.05rem;padding:var(--s5) var(--s6);display:flex;flex-direction:column;align-items:center;">
+                        <span><i class="fas fa-layer-group" aria-hidden="true"></i>&nbsp; Quizzes</span>
+                        <span style="font-size:.78rem;font-weight:500;opacity:.75;margin-top:4px;">Practice questions &amp; exercises</span>
+                    </button>
+                    <button class="secondary-btn" onclick="selectTypeAndStart('year')" style="font-size:1.05rem;padding:var(--s5) var(--s6);display:flex;flex-direction:column;align-items:center;">
+                        <span><i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp; Years (Past Exams)</span>
+                        <span style="font-size:.78rem;font-weight:500;opacity:.75;margin-top:4px;">Past exam questions by year</span>
+                    </button>
+                </div>
+                <button onclick="closeTypeSelect()" style="margin-top:var(--s4);width:100%;background:none;border:1px solid var(--border);color:var(--text-muted);padding:var(--s3);border-radius:var(--r-md);cursor:pointer;font-family:inherit;font-size:.9rem;">
+                    <i class="fas fa-times" aria-hidden="true"></i> Cancel
+                </button>
+            </div>
+        </div>
 
         <!-- ── QUIZ VIEW ───────────────────────────────────── -->
         <section id="view-quiz" class="hidden" aria-label="Active quiz" aria-live="polite">
@@ -1859,6 +2091,130 @@
         { sheet: 'Autonomic nerve system', type: 'MCQ', question: '27. Salbutamol is:', options: ['α1-agonist', 'α2-agonist', 'β1-agonist', 'β2-agonist'], correct: 'D', category: 'quiz' },
         { sheet: 'Autonomic nerve system', type: 'MCQ', question: '28. Drug used for treating pregnancy-induced hypertension is:', options: ['Pindolol', 'Acebutolol', 'Metoprolol', 'Labetolol'], correct: 'D', category: 'quiz' },
 
+        // ── Autonomic nerve system — YEARS (past exam questions) ──────
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '1. Neurons carry signals away from CNS to peripheral tissues called:', options: ['Afferent division', 'Efferent division', 'Somatic', 'Ganglia'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '2. Preganglionic is cell body originates in ganglion and terminates on effector organ.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '3. Postganglionic originate in the ganglia and terminates on effector organ.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '4. Autonomic nervous system responsible for involuntary requirement of the body.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '5. Parasympathetic activity predominates during restlessness and repose.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '6. Dilatation of pupil due to sympathetic nervous system stimulation.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '7. M3-receptors are excitatory.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '8. M2-receptors are blocked by:', options: ['Pirenzepine', 'Gallamine', 'Pethidine', 'Acetylcholine', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '9. Pirenzepine is M2-blocker.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '10. Xerostomia treated by muscarinic agonist drug.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '11. Cyclopentolate is used for:', options: ['Xerostomia', 'Glaucoma', 'Tachycardia', 'Miosis', 'None of the above'], correct: 'E', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '12. Atropine is antidote to:', options: ['Cholinesterases', 'Adrenaline', 'Histamine', 'All of above', 'None of above'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '13. Atropine used as antidote to Anticholinesterases.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '14. Drug used as antidote to cholinesterase is:', options: ['Cyclopentolate', 'Atropine', 'Ipratropium', 'Suxamethonium'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '15. Pilocarpine is used to stimulate salivary flow.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '16. Pilocarpine is used to stimulate salivary flow.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '17. Physostigmine have action on skeletal muscles greater than neostigmine.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '18. Neostigmine can not enter CNS.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '19. Neostigmine can enter CNS.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '20. Trimethaphan cause mydriasis.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '21. Trimethaphan produce miosis.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '22. Drug used for minimize bleeding during all types of operations is:', options: ['Trimethaphan', 'Hexamethonium', 'Botulinum toxins', 'Magnesium ions', 'None of the above'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '23. Hemicholinium act by interference with Acetylcholine release.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '24. All the following drugs interfere with ACh release except:', options: ['Magnesium ions', 'Hemicholinium', 'Hexamethonium', 'Botulinum toxin'], correct: 'C', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '25. Triethylcholine inhibit choline transport due to:', options: ['Interference with acetylcholine release', 'Interference with acetylcholine action', 'Interference with acetylcholine synthesis'], correct: 'C', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '26. Noradrenaline is synthesized from:', options: ['Cytosine', 'L-Tyrosine', 'Alanine', '—'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '27. Noradrenaline is synthesized from L-Tyrosine.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '28. Rate limiting step is:', options: ['Decarboxylated of tyrosine to DOPA', 'Conversion of Noradrenalin to adrenaline', 'Not related to Noradrenalin synthesis', 'Facilitate exocytosis', 'None of the above'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '29. Dopamine converted to Noradrenaline by:', options: ['Dopamine decarboxylase', 'Tyrosine hydroxylase', 'Dopamine β-hydroxylase'], correct: 'C', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '30. Dopamine is converted to noradrenalin by:', options: ['Dopamine-methyl transferase', 'Dopamine decarboxylase', 'Dopamine', 'None of the above'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '31. Dopamine is converted to Adrenaline by dopamine β-hydroxylase.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '32. Auto-inhibitory feedback of noradrenaline is mediated by:', options: ['α1-receptors', 'α2-receptors', 'β1-receptors', 'β2-receptors'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '33. Auto-inhibitor feedback mechanism mediated by:', options: ['α1', 'β1', 'β2', 'α2'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '34. Auto-inhibitory feedback mechanism mediated by:', options: ['α1-receptor', 'α2-receptor', 'β1-receptor', 'β2-receptor'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '35. Auto inhibitory feedback mechanism is:', options: ['Mechanism regulate Adrenaline release through the α2-receptors', 'Mechanism regulate Noradrenalin release through the α2-receptors', 'Mechanism regulate Isoprenaline release through the α2-receptors', '(a) and (b)'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '36. Auto-inhibitory feedback mechanism is:', options: ['Regulated Noradrenalin metabolism', 'Regulated Noradrenalin uptake', 'Not related to Noradrenalin', 'Mediated by α1-receptors', 'Terminate of catecholamine action'], correct: 'E', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '37. Salbutamol is:', options: ['α1-agonist', 'α2-agonist', 'β1-agonist', 'β2-agonist'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '38. Used mainly in asthma:', options: ['Dopamine', 'Salbutamol', 'Clonidine'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '39. Phenylephrine is:', options: ['Selective α1-agonist', 'Selective α2-agonist', 'Selective β1-agonist', 'Selective β2-agonist', 'Mixed α and β'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '40. Phenylephrine is selective α1-agonist.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '41. Methoxamine is:', options: ['Used for hypertension', 'Used for hypotension', 'Not clinically used', 'Used for asthmatic patients', '(b) and (d)'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '42. Methoxamine is cause:', options: ['Decrease blood pressure', 'Increase blood pressure', 'Vasodilatation', 'Tremor', '(b and d)'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '43. Which one of the following is not correct:', options: ['Terbutaline is selective β2-agonist', 'Methoxamine is selective α2-agonist', 'Methylnoradrenaline is selective α2-agonist', 'Dopamine is mixed acting adrenoceptors agonist'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '44. Methylnoradrenaline is:', options: ['Increase blood pressure due to contraction of peripheral blood vessels', 'Decrease blood pressure due to centrally action', 'Increase blood pressure due to stimulate Noradrenalin release', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '45. Dopamine is:', options: ['Selective α1', 'Mixed acting', 'Selective α2', 'Selective β1'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '46. Isoprenaline is used to:', options: ['Cardiac arrest', 'Symptomatic heart block', 'Asthma', 'Hypertension'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '47. Drug choice for symptomatic heart block:', options: ['Phenoxybenzamine', 'Phentolamine', 'Yohimbine', 'Doubtamine', 'None of the above'], correct: 'E', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '48. Clonidine is selective α2-agonist.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '49. Clonidine cause fall in blood pressure by inhibit noradrenalin release.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '50. Clonidine is used for hypotension.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '51. Phentolamine is:', options: ['Irreversible acting', 'Block α1-receptors', 'Block α2-receptors', 'Increase B.P'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '52. Phentolamine causes a fall in blood pressure due to:', options: ['Block of α2-receptors', 'Block of α1-receptors', 'Block of β1-receptors', 'Block of β2-receptors', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '53. Phentolamine decrease blood pressure due to block of α2-receptor.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '54. Idazoxan:', options: ['Cause vasodilation', 'Inhibit NA release', 'Used clinically', 'Increase B.P'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '55. Idazoxan is:', options: ['Increase Noradrenalin release', 'Increase Acetylcholine release', '(a) and (b)', 'Selective α1-antagonists'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '56. Idazoxan increase noradrenalin release.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '57. Idazoxan cause vasodilatation due to decrease noradrenalin release.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '58. Propranolol is:', options: ['β1 antagonist', 'β2 antagonist', '(a + b)'], correct: 'C', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '59. Atenolol:', options: ['Selective B1', 'Selective B2', 'Increase NA release', 'Decrease NA release'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '60. Hypertensive patients with impaired pulmonary functions:', options: ['Atenolol', 'Pindolol', 'Labetolol', '(A & b)'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '61. Metoprolol decrease blood pressure due to selective β1-antagonist.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '62. Pindolol does not affect lipid and carbohydrates.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '63. Pindolol used for hypertensive patient with tachycardia.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '64. Drug used for treating pregnancy-induced hypertension is:', options: ['Pindolol', 'Acebutolol', 'Metoprolol', 'Labetolol'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '65. Labetolol is:', options: ['α-blocker', 'blocker(α-β)', 'α-agonist', 'β-agonist'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '66. Drug choice in treating pregnancy induced hypertension is:', options: ['Labetolol', 'Propranolol', 'Atenolol', 'None of the above'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '67. Cocaine:', options: ['Bradycardia', 'Increase blood pressure', 'Increase NA', 'Stimulation NA'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '68. A drug that inhibits the uptake of NA:', options: ['Reserpine', 'Guanethidine', 'Labetolol', 'Cocaine'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '69. Cocaine is cause:', options: ['Bradycardia', 'Diarrhea', 'Tachycardia', 'Constipation'], correct: 'C', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '70. Cocaine causes:', options: ['Increase blood pressure', 'Decrease blood pressure', 'Bradycardia', 'Tachycardia', '(a and d)'], correct: 'E', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '71. Drug act by block the uptake of Noradrenalin is:', options: ['Cocaine', 'Labetolol', 'Idazoxan', '(b) and (c)'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '72. Cocaine is block uptake of Noradrenalin to treat hypertension.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '73. At tissue level histamine is large in:', options: ['Mast cell', 'Basophil', 'Lung', '(A & B)'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '74. At cellular level histamine is large in:', options: ['Lung', 'Skin', 'GIT', 'Mast cells'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '75. Morphine causes:', options: ['Increase histamine release', 'Decrease histamine release', '(A & B)', 'Allergic'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '76. Tubocurarine cause:', options: ['Increase histamine release', 'Decrease histamine release', 'Allergy', '(a-c)'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '77. Histamine decarboxylase is responsible for:', options: ['Synthesis of histamine', 'Metabolism of histamine', 'Excretion of histamine', 'Storage of histamine'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '78. Release of histamine causes relaxation of vasculature.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '79. Histamine is metabolized by:', options: ['Histamylase', 'Histaminase', 'Histamine hydroxylase', 'Histamine decarboxylase'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '80. Increase gastric secretion mediated by:', options: ['H1-blocker', 'H2-blocker', 'H1-agonist', 'None'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '81. Flare is:', options: ['Arteriolar dilatation', 'Capillary dilatation', 'Fluid exudation', 'None'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '82. Wheal is:', options: ['Intense capillary dilatation', 'Fluid capillary exudation', 'Arteriolar dilatation', 'None'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '83. Red spot is:', options: ['Hotness', 'Axon reflex', 'Arteriolar dilatation', 'None'], correct: 'C', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '84. Wheal is one of triple response of Histamine due to:', options: ['Dilatation of capillary', 'Dilatation of arteriolar', '(a) and (b)', 'None of the above'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '85. Flare is:', options: ['Redness due to capillary dilatation', 'Redness due to arteriolar dilatation', 'Redness due to venules dilatation', 'Redness due to fluid exudation', '(a) and (d)'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '86. Flare is redness due to arteriolar dilatation.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '87. Triple response is due to:', options: ['Allergy', 'Histamine', 'Tissue injury', 'Exocytosis'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '88. Histamine is released as a result of certain stimulating conditions as:', options: ['Toxicity', 'Allergic reaction', 'Endocytosis', 'All of the above'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '89. Histamine released as a result of:', options: ['Allergic reaction', 'Tissue injury', 'Drugs', 'All of the above', '(a) and (b)'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '90. Histamine cause contraction of non-vascular smooth muscles.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '91. Antitussive by:', options: ['Antazoline', 'Chlorpheniramine', 'Promethazine', 'Histamine'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '92. Promethazine causes:', options: ['Antiemetic', 'Antimotion sickness', 'Anaesthetic effect', 'All of the above'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '93. Promethazine is:', options: ['H2-antihistaminic drug used as sedative drug', 'H1-antihistaminic drug used as antiemetic', 'H1-antihistaminic drug caused tremor', '(b) and (c)'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '94. Promethazine is Sedative, Antiemetic, decrease tremor.', options: ['All above (a and b)'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '95. Fexofenadine is:', options: ['High sedation', 'Least sedation', 'Antiemetic', '(b – c)'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '96. Fexofenadine is good sedative.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '97. H1-blocker side effects are:', options: ['Allergy', 'Uretralia', 'Headache', 'Drowsiness'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '98. Dry mouth is side effect of H1-antihistaminics.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '99. Triple response is blocked by:', options: ['H1 blocker', 'H2 blocker', '(a + b)', 'None'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '100. Dimenhydrinate is:', options: ['Antimoticon', 'Antiemetic', 'Sedative', 'All'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '101. Dimenhydrinate is:', options: ['Sedative', 'Antitussive', 'Antimotion sickness'], correct: 'C', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '102. Dimenhydrinate have antimotion sickness due to action on H1-receptor.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '103. Pre-anaesthesia by:', options: ['Histamine', 'H1-agonist', 'H2-antagonist', 'None'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '104. Ranitidine act as enzyme inhibitor for many drugs. e.g. Diazepam.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '105. Ranitidine act as enzyme inhibitor for many drugs. E.g. Diazepam.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '106. Zollinger-Ellison syndrome treated by:', options: ['Ranitidine', 'Loratidine', 'Promethazine', '(a) and (b)', 'None of the above'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '107. Zollinger-Ellison syndrome is treated by:', options: ['Histamine', 'H1-blocker', 'H2-blocker', 'Opioid', 'Aspirin'], correct: 'C', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '108. Zollinger-Ellison syndrome treated by:', options: ['Ranitidine', 'Loratidine', 'Promethazine', '(a) and (b)', 'None of the above'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '109. Famotidine is H2-blocker.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '110. Famotidine is:', options: ['H1-antihistaminics', 'H2-antihistaminics', 'Histamine agonist', 'Not related to histamine', '(b) and (c)'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '111. Cimetidine is retard absorption of:', options: ['Theophylline', 'Ketoconazole', 'Warfarin', 'All'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '112. Cimetidine potentiate the toxicity of Phenobarbitone.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '113. Cimetidine may cause impotence in males.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '114. Cimetidine mainly cause impotence in males.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '115. Cimetidine penetrate the toxicity of:', options: ['Warfarin', 'Aspirin', 'Lorazepam', 'Lignocaine', '(a) and (d)'], correct: 'E', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '116. Cimetidine penetrates the toxicity of (a) and (b):', options: ['Warfarin', 'Aspirine', 'Lorazepam', 'I glycamine'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '117. Carbachol act on nicotinic receptors.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '118. β-bungaro toxin is:', options: ['Increase as a cytokine release decrease ectytb', 'Decrease noradrenalin release', 'Increase noradrenalin release', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '119. Isoprenaline is antagonized by propranolol by:', options: ['Competitive antagonist', 'Non-competitive antagonist', 'Chemical antagonist', 'Physiological antagonist', 'None of the above'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '120. Propranolol is:', options: ['Contraindicated in pregnancy', 'Contraindicated in patient with asthma', 'Contraindicated in patient with diabetes', 'All of the above'], correct: 'D', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '121. Pheochromocytoma is management by:', options: ['Phenoxybenzamine', 'Phentolamine', 'Adrenaline', 'Dopamine'], correct: 'A', category: 'year' },
+        { sheet: 'Autonomic nerve system', type: 'MCQ', question: '122. Pheochromocytoma is treated by:', options: ['Phentolamine', 'Phenoxybenzamine', 'Terazocine', 'Yohimbine', 'Adrenaline'], correct: 'B', category: 'year' },
+
         // ── Autonomic nerve system (histamine) (24 questions) ─────────
         { sheet: 'Autonomic nerve system (histamine)', type: 'MCQ', question: '1. Histamine is metabolized by:', options: ['Histamylase', 'Histaminase', 'Histamine hydroxylase', 'Histamine decarboxylase'], correct: 'B', category: 'quiz' },
         { sheet: 'Autonomic nerve system (histamine)', type: 'MCQ', question: '2. Wheal is:', options: ['Intense capillary dilatation', 'Fluid capillary exudation', 'Arteriolar dilatation', 'None'], correct: 'B', category: 'quiz' },
@@ -1949,18 +2305,75 @@
     let kbHintTimer      = null;
 
     /* ──────────────────────────────────────────────
+       USER / WELCOME
+    ────────────────────────────────────────────── */
+    let currentUser = null;
+
+    function onNameInput() {
+        const val = document.getElementById('name-input').value.trim();
+        document.getElementById('start-btn').disabled = val.length < 1;
+    }
+
+    function submitName() {
+        const val = document.getElementById('name-input').value.trim();
+        if (!val) return;
+        currentUser = val;
+        localStorage.setItem('pharma_user_name', val);
+        loadUserData();
+        document.getElementById('welcome-screen').classList.add('hidden');
+        document.getElementById('user-name-display').textContent = val;
+        renderDashboard();
+        updateGlobalProgress();
+    }
+
+    function logout() {
+        if (!confirm('Sign out and clear your session?\n(Your progress data will be kept for next login.)')) return;
+        localStorage.removeItem('pharma_user_name');
+        currentUser = null;
+        // Reset view to home
+        stopTimer();
+        document.getElementById('view-quiz').classList.add('hidden');
+        document.getElementById('view-list').classList.add('hidden');
+        document.getElementById('view-home').classList.remove('hidden');
+        currentSheet = null;
+        // Show welcome screen again
+        document.getElementById('name-input').value = '';
+        document.getElementById('start-btn').disabled = true;
+        document.getElementById('welcome-screen').classList.remove('hidden');
+        showToast('Signed out. See you soon! 👋', '');
+    }
+
+    function progressKey()   { return 'pharma_progress_' + (currentUser || 'guest'); }
+    function bookmarksKey()  { return 'pharma_bookmarks_' + (currentUser || 'guest'); }
+
+    /* ──────────────────────────────────────────────
        INIT
     ────────────────────────────────────────────── */
     window.addEventListener('DOMContentLoaded', () => {
+        const savedName = localStorage.getItem('pharma_user_name');
+        if (savedName) {
+            currentUser = savedName;
+            document.getElementById('user-name-display').textContent = savedName;
+            loadUserData();
+            renderDashboard();
+            updateGlobalProgress();
+        } else {
+            // Show welcome screen
+            document.getElementById('welcome-screen').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('name-input').focus();
+            }, 400);
+        }
+    });
+
+    function loadUserData() {
         try {
-            progressData = JSON.parse(localStorage.getItem('pharma_progress_final_v2')) || {};
-            bookmarks    = JSON.parse(localStorage.getItem('pharma_bookmarks_final_v2'))  || [];
+            progressData = JSON.parse(localStorage.getItem(progressKey()))  || {};
+            bookmarks    = JSON.parse(localStorage.getItem(bookmarksKey())) || [];
         } catch (_) {
             progressData = {}; bookmarks = [];
         }
-        renderDashboard();
-        updateGlobalProgress();
-    });
+    }
 
     /* ──────────────────────────────────────────────
        MODE / TYPE SELECTORS
@@ -1978,9 +2391,32 @@
         questionCategory = type;
         _setAria('type-year', type === 'year');
         _setAria('type-quiz', type === 'quiz');
-        document.getElementById('type-year').classList.toggle('active', type === 'year');
-        document.getElementById('type-quiz').classList.toggle('active', type === 'quiz');
         currentSheet ? startTopic(currentSheet) : renderDashboard();
+    }
+
+    /* ──────────────────────────────────────────────
+       TYPE SELECTION OVERLAY (shown after sheet pick)
+    ────────────────────────────────────────────── */
+    let pendingSheet = null;
+
+    function openTypeSelect(sheet) {
+        pendingSheet = sheet;
+        document.getElementById('type-select-sheet-name').textContent = sheet;
+        document.getElementById('type-select-overlay').classList.remove('hidden');
+    }
+
+    function closeTypeSelect() {
+        pendingSheet = null;
+        document.getElementById('type-select-overlay').classList.add('hidden');
+    }
+
+    function selectTypeAndStart(type) {
+        questionCategory = type;
+        const sheetToOpen = pendingSheet || currentSheet;
+        closeTypeSelect();
+        if (sheetToOpen) {
+            startTopic(sheetToOpen);
+        }
     }
 
     /* aria-pressed helper */
@@ -2006,27 +2442,37 @@
        DASHBOARD
     ────────────────────────────────────────────── */
     function renderDashboard() {
+        // Update welcome greeting with user name
+        const titleEl = document.querySelector('#view-home .section-title');
+        if (titleEl && currentUser) {
+            titleEl.innerHTML = `Hey <span class="text-primary">${currentUser}</span> 👋`;
+        } else if (titleEl) {
+            titleEl.innerHTML = `Welcome to <span class="text-primary">Pharmacology</span> Quiz!`;
+        }
         const grid = document.getElementById('sheets-grid');
         grid.innerHTML = '';
 
         sheetNames.forEach(sheet => {
-            const qCount  = allQuestions.filter(q => q.sheet === sheet && q.category === questionCategory).length;
+            const qQuiz   = allQuestions.filter(q => q.sheet === sheet && q.category === 'quiz').length;
+            const qYear   = allQuestions.filter(q => q.sheet === sheet && q.category === 'year').length;
+            const qTotal  = qQuiz + qYear;
             const progress = progressData[sheet] || 0;
 
             const card = document.createElement('div');
             card.className = 'card';
             card.setAttribute('role', 'button');
             card.setAttribute('tabindex', '0');
-            card.setAttribute('aria-label', `Start ${sheet} — ${qCount} questions`);
+            card.setAttribute('aria-label', `Start ${sheet} — ${qTotal} questions`);
 
-            card.onclick  = () => startTopic(sheet);
-            card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') startTopic(sheet); };
+            card.onclick  = () => openTypeSelect(sheet);
+            card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') openTypeSelect(sheet); };
 
             card.innerHTML = `
                 <div>
                     <h3>${sheet}</h3>
                     <div class="card-stats">
-                        <div class="stat-item"><i class="fas fa-file-alt" aria-hidden="true"></i> ${qCount} Questions</div>
+                        <div class="stat-item"><i class="fas fa-layer-group" aria-hidden="true"></i> ${qQuiz} Quizzes</div>
+                        <div class="stat-item"><i class="fas fa-calendar-alt" aria-hidden="true"></i> ${qYear} Years</div>
                         <div class="stat-item"><i class="fas fa-chart-line" aria-hidden="true"></i> ${progress}% Mastery</div>
                     </div>
                 </div>
@@ -2233,7 +2679,7 @@
 
         // Persist best score
         progressData[currentSheet] = Math.max(progressData[currentSheet] || 0, percent);
-        try { localStorage.setItem('pharma_progress_final_v2', JSON.stringify(progressData)); }
+        try { localStorage.setItem(progressKey(), JSON.stringify(progressData)); }
         catch (_) {}
 
         const m   = Math.floor(secondsElapsed / 60).toString().padStart(2,'0');
@@ -2411,7 +2857,7 @@
     }
 
     function _saveBookmarks() {
-        try { localStorage.setItem('pharma_bookmarks_final_v2', JSON.stringify(bookmarks)); }
+        try { localStorage.setItem(bookmarksKey(), JSON.stringify(bookmarks)); }
         catch (_) {}
     }
 
