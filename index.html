@@ -1464,6 +1464,57 @@
         }
 
         /* ============================================================
+           BATCH 32 SECTION
+        ============================================================ */
+        .batch32-section {
+            margin-top: var(--s10);
+        }
+        .batch32-header {
+            display: flex;
+            align-items: center;
+            gap: var(--s4);
+            margin-bottom: var(--s6);
+        }
+        .batch32-badge {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a1a00;
+            font-weight: 800;
+            font-size: .72rem;
+            letter-spacing: .6px;
+            padding: 3px 11px;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .batch32-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -.4px;
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        @media (min-width: 640px) { .batch32-title { font-size: 1.5rem; } }
+        .batch32-divider {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(247,151,30,.35), transparent);
+        }
+        /* Batch 32 card colour accent */
+        .card.b32-card {
+            border-color: rgba(247, 151, 30, 0.22);
+        }
+        .card.b32-card:hover,
+        .card.b32-card:focus {
+            border-color: rgba(247, 151, 30, 0.55);
+            box-shadow: 0 8px 32px rgba(247,151,30,.15);
+        }
+        .card.b32-card .progress-fill {
+            background: linear-gradient(90deg, #f7971e, #ffd200);
+        }
+
+        /* ============================================================
            USER CHIP
         ============================================================ */
         .user-chip {
@@ -1610,9 +1661,19 @@
             <div id="sheets-grid" class="grid" aria-label="Quiz sections">
                 <!-- Dynamically injected by JS -->
             </div>
-        </main>
 
-        <!-- ── WELCOME / LOGIN SCREEN ────────────────────────── -->
+            <!-- ── BATCH 32 SECTION ─────────────────────────── -->
+            <div class="batch32-section" id="batch32-section">
+                <div class="batch32-header">
+                    <span class="batch32-badge">🎓 دفعة 32</span>
+                    <h2 class="batch32-title">اسئلة دفعة 32</h2>
+                    <div class="batch32-divider"></div>
+                </div>
+                <div id="batch32-grid" class="grid" aria-label="Batch 32 question sheets">
+                    <!-- Dynamically injected by JS -->
+                </div>
+            </div>
+        </main>
         <div id="welcome-screen" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="welcome-heading">
             <div class="welcome-card">
                 <div class="welcome-pill">💊 Pharma Pro</div>
@@ -2810,6 +2871,133 @@
         { sheet: 'Opioid', type: 'MCQ', question: '303. Clobazepam is', options: ['Used for status epilepticus', 'Used for epilepsy', 'Induce anesthesia', '(b) and (c)', 'None of the above'], correct: 'B', category: 'year' },
         { sheet: 'Opioid', type: 'MCQ', question: '320. Flumazenil tablet is used as', options: ['Benzodiazepine antagonist', 'Benzodiazepine agonist', 'Treat Benzodiazepine over dose', '(a) and (c)', 'None of the above'], correct: 'D', category: 'year' },
         { sheet: 'Opioid', type: 'MCQ', question: '321. Chlordiazepoxide is', options: ['Decrease opiate withdrawal symptoms', 'Used for epilepsy', 'Produce convulsion', 'All of the above', 'None of the above'], correct: 'A', category: 'year' },
+
+        // ══════════════════════════════════════════════════════
+        //  BATCH 32 — اسئلة دفعة 32
+        // ══════════════════════════════════════════════════════
+
+        // ── B32 Introduction - Pharmacology ─ MCQ ──────────────
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '1. Toxicology is the branch of pharmacology that deals with:', options: ['Side effects', 'Adverse effects', 'Elimination', 'Pharmacological action', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '2. Acetaminophen is:', options: ['Generic name', 'Trade name', 'Chemical name', 'Scientific name', 'None of the above'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '3. Migraine is:', options: ['Decrease distribution', 'Increase metabolism', 'Decrease absorption', 'Increase absorption', 'None of the above'], correct: 'C', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '4. Oral route is safe due to:', options: ['Fast absorption', 'Fast metabolism', 'Slow elimination', 'Slow absorption', 'None of the above'], correct: 'D', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '5. Haemolysis may occur by:', options: ['Slow injection', 'Intermediate injection', 'Rapid injection', 'All of the above', 'None of the above'], correct: 'C', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '6. Intraperitoneal injection commonly used in:', options: ['Human study', 'Animal study', '(a and b)', 'Pediatrics', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '7. First-pass metabolism is:', options: ['Decrease bioavailability', 'Increase bioavailability', 'Not affect bioavailability', 'Increase pharmacological action', 'None of the above'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '8. In some cases metabolic reactions generate:', options: ['More polar metabolites', 'Inactive metabolites', 'Toxic effects', 'All of the above', 'None of the above'], correct: 'C', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '9. Glucuronidation is the most common:', options: ['Phase-I reaction', 'Phase-II metabolism', 'Phase-III metabolism', 'All above', 'None above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '10. Competition between drugs for the carrier lead to:', options: ['Increase action', 'Increase absorption', 'Drug-drug interaction', '(a and c)', 'None of the above'], correct: 'C', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '11. Maximal response of drug is:', options: ['Potency', 'ED50', 'LD50', 'Efficacy', 'None of the above'], correct: 'D', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '12. Isoprenaline is competitively antagonized by:', options: ['Aspirin', 'Panadol', 'Acetoprolol', 'Verapamil', 'None of the above'], correct: 'E', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '13. Peripheral neuropathy is related to:', options: ['Slow acetylation', 'Intermediate acetylation', 'Fast acetylation', 'None above', 'All above'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '14. Grapefruit inhibit most of microsomal enzymes and lead to:', options: ['Decrease metabolism', 'Increase metabolism', 'Flushing', 'All of above', 'None of the above'], correct: 'E', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '15. Warfarin is:', options: ['Increase bleed with tyramine', 'Decrease bleed with phenylbutazone', 'Decrease bleed with aspirin', 'Increase bleed with azapropazone', 'None of the above'], correct: 'D', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '16. Adverse or beneficial interaction is:', options: ['Different', 'Similar', 'Mixed', 'All of the above', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '17. Metoclopramide is:', options: ['Reduce Digoxin absorption', 'Reduce Propantheline absorption', 'Increase Digoxin absorption', 'All of the above', 'None of the above'], correct: 'C', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '18. Neomycin causes:', options: ['Malabsorption syndrome', 'Decrease GIT motility', 'Delays gastric emptying', 'All of the above', 'None of the above'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '19. Dichlophenazone is:', options: ['Increase warfarine activity', 'Decrease warfarine activity', 'Decrease aspirin activity', '(b and c)', 'None'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '20. Probenecid reduces:', options: ['Excretion of Paracetamol', 'Excretion of Penicillin', 'Absorption of Penicillin', 'All of above', 'None above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '21. Hypnosedatives are:', options: ['Decrease alcohol action', 'Increase Prostaglandins', 'Increase alcohol action', 'Alcohol antagonist', 'None of the above'], correct: 'C', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '22. Thiazide diuretics:', options: ['Rise lithium plasma levels', 'Inhibit lithium plasma levels', 'Not affect lithium', 'All of above', 'None above'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'MCQ', question: '23. Propantheline is:', options: ['Decrease Paracetamol absorption', 'Increase Paracetamol absorption', 'Decrease aspirin absorption', 'All of the above', 'None of the above'], correct: 'A', category: 'year' },
+
+        // ── B32 Introduction - Pharmacology ─ T/F ──────────────
+        { sheet: 'B32 Introduction', type: 'TF', question: '24. If in doubt, don\'t give the drugs together.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '25. Conversion of acetylated metabolite to acetyl hydralazine lead to nephrotoxicity.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '26. Different pharmacological response to the same concentration is pharmacodynamic deviation.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '27. Potency is effective dose response.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '28. Below a minimum threshold, no effect.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '29. Many hydrophobic drugs conjugates (particularly glucuronide).', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '30. Binding drugs are not readily filtered through glomerulus.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '31. Dehalogenation is the most common conjugation reaction.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '32. Renal excretion of changed drugs plays only a modest role in overall elimination.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '33. Albumin bind mainly acidic drugs.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '34. Bioequivalence is similar bioavailability.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '35. Inhalation can produce rapid local effect.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '36. First pass metabolism mainly limit efficacy.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '37. Migraine causes gastric stasis.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '38. Adol is generic name.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Introduction', type: 'TF', question: '39. Aspirin is synthetic compound.', options: ['True', 'False'], correct: 'A', category: 'year' },
+
+        // ── B32 Autonomic Nervous System ─ MCQ ─────────────────
+        { sheet: 'B32 ANS', type: 'MCQ', question: '1. β-adrenergic receptors are linked as:', options: ['Ion-channel', 'G-protein', 'Enzyme', 'Intracellular', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 ANS', type: 'MCQ', question: '2. Sympathetic stimulation lead to:', options: ['Tachycardia', 'Glycolysis', 'Mydriasis', '(a and c)', 'All of the above'], correct: 'E', category: 'year' },
+        { sheet: 'B32 ANS', type: 'MCQ', question: '3. M2-receptors are blocked by:', options: ['Pirenzepine', 'Gallamine', 'Pethidine', 'Acetylcholine', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 ANS', type: 'MCQ', question: '4. Atropine is antidote to:', options: ['Cholinesterases', 'Adrenaline', 'Histamine', 'All of above', 'None of above'], correct: 'E', category: 'year' },
+        { sheet: 'B32 ANS', type: 'MCQ', question: '5. Isoflurophate causes:', options: ['Mydriasis', 'Miosis', 'Increase breathing', 'Motor stimulation', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 ANS', type: 'MCQ', question: '6. Methoxamine causes:', options: ['Decrease blood pressure', 'Increase blood pressure', 'Vasodilatation', 'Tremor', '(b and d)'], correct: 'B', category: 'year' },
+        { sheet: 'B32 ANS', type: 'MCQ', question: '7. Dobutamine is:', options: ['Selective α1-agonist', 'Selective α2-agonist', 'Selective β1-agonist', 'Selective β2-agonist', 'None above'], correct: 'C', category: 'year' },
+        { sheet: 'B32 ANS', type: 'MCQ', question: '8. Clonidine is:', options: ['Prevent premature labour', 'Used for hypotension', 'Prolonged local anaesthesia', 'None of above', 'All of above'], correct: 'D', category: 'year' },
+        { sheet: 'B32 ANS', type: 'MCQ', question: '9. Labetolol is:', options: ['α-blocker', 'β-blocker', '(a and b)', 'α-agonist', 'β-agonist'], correct: 'C', category: 'year' },
+        { sheet: 'B32 ANS', type: 'MCQ', question: '10. Wheal is due to:', options: ['Capillary dilatation', 'Fluid exudation', 'Axon reflex', '(a and b)', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 ANS', type: 'MCQ', question: '11. Ranitidine is used in:', options: ['Gastric ulcer', 'Cough', 'Anaphylactic reaction', 'Vomiting', 'None of the above'], correct: 'A', category: 'year' },
+
+        // ── B32 ANS ─ T/F ───────────────────────────────────────
+        { sheet: 'B32 ANS', type: 'TF', question: '12. Cimetidine is cause impotence in males.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 ANS', type: 'TF', question: '13. Histamine is formed from histidine by histidine carboxylase.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 ANS', type: 'TF', question: '14. Phentolamine cause block of (α1–α2) receptors.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 ANS', type: 'TF', question: '15. Dopamine is act on (α1–α2) receptors.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 ANS', type: 'TF', question: '16. Trimethaphan cause mydriasis.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 ANS', type: 'TF', question: '17. Isoflurophate produces miosis.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 ANS', type: 'TF', question: '18. Pirenzepine is M2-blocker.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 ANS', type: 'TF', question: '19. Uptake mechanism stimulates Acetylcholine release.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 ANS', type: 'TF', question: '20. Enteric nervous system is only own to control motor and secretory functions of intestine.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 ANS', type: 'TF', question: '21. Sympathetic system leaves CNS in thoraco-lumbar outflow.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 ANS', type: 'TF', question: '22. Isoprenaline is blocked by propranolol.', options: ['True', 'False'], correct: 'A', category: 'year' },
+
+        // ── B32 Antimicrobial Agents ─ MCQ ──────────────────────
+        { sheet: 'B32 Antimicrobial', type: 'MCQ', question: '1. Sulphasalazine is:', options: ['Short acting', 'Long acting', 'GIT absorption', '(a and b)', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'MCQ', question: '2. Benzylpenicillin is:', options: ['Short half life', 'Long half life', 'Slow release', '(a and c)', 'None of the above'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'MCQ', question: '3. Cefamandole is:', options: ['First generation Cephalosporin', 'Third generation Cephalosporin', 'Second generation Cephalosporin', 'Fourth generation Cephalosporin', 'None of the above'], correct: 'C', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'MCQ', question: '4. Cefuroxime is good for:', options: ['Sinusitis', 'Otitis media', 'Meningitis', '(a and b)', 'All of the above'], correct: 'C', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'MCQ', question: '5. Vancomycin is:', options: ['Bacteriostatic', 'Good for MRSA', 'Good in endocarditis', '(b and c)', 'All of the above'], correct: 'D', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'MCQ', question: '6. Streptomycin is good for:', options: ['Plague', 'Tularemia', 'Pneumonia', '(a and b)', 'None of the above'], correct: 'D', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'MCQ', question: '7. Clindamycin is:', options: ['Effective against bacteroides fragilis', 'Not used for endocarditis', 'Less absorption from GIT', 'Only excreted by urine', '(a and d)'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'MCQ', question: '8. Sulphamethoxazole is combined with:', options: ['Co-trimoxazole', 'Azapropazone', 'Phenylbutazone', 'Trimethoprime', 'None'], correct: 'D', category: 'year' },
+
+        // ── B32 Antimicrobial Agents ─ T/F ──────────────────────
+        { sheet: 'B32 Antimicrobial', type: 'TF', question: '9. Fioxacin is good for cervicitis.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'TF', question: '10. Clarithromycin is useful in lyme disease.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'TF', question: '11. Chloramphenicol is not good for H-influenza.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'TF', question: '12. Tetracyclines have a very wide spectrum of activity.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'TF', question: '13. Aztreonam is toxic and broad spectrum.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'TF', question: '14. Cephalosporins is synthetic antibiotic.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'TF', question: '15. Megaloplastic anemia due to trimethoprim is prevented by folic acid.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Antimicrobial', type: 'TF', question: '16. Sulphonamides inhibit non-competitively dihydropteorate synthase.', options: ['True', 'False'], correct: 'B', category: 'year' },
+
+        // ── B32 Opioid Analgesics ─ MCQ ─────────────────────────
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '1. Dextropropoxyphene is related to:', options: ['Phenylpiperidine series', 'Methadone series', 'Benzmorphan series', 'Thebaine series', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '2. σ (Sigma) receptors responsible for:', options: ['Euphoria', 'Analgesia', 'Hallucination', 'All of above', 'None of above'], correct: 'C', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '3. Morphine causes:', options: ['Urticaria', 'Bradycardia', 'Hypertension', '(a and b)', 'All of the above'], correct: 'D', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '4. Heroin is:', options: ['Less active than morphine', 'High lipid solubility', 'Not cross BBB', '(a and b)', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '5. Pentazocin is:', options: ['Semisynthetic', 'Not dose depended', '(a and b)', 'Less toxicity', 'None of the above'], correct: 'D', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '6. Prostaglandins act to:', options: ['Inhibit pain', 'Stimulate pain', 'Inhibit vasodilatation', '(b and c)', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '7. Aspirin is:', options: ['Equipotent action on both COX isoforms', 'More selective on COX2', 'Good for asthmatic patient', 'All above', 'None of the above'], correct: 'E', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '8. Indomethacin is:', options: ['Produce adverse effects', 'Produce hallucination', 'Not combined with diuretics', '(a and b)', 'All of the above'], correct: 'E', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '9. Excitement is:', options: ['Stage I-anaesthesia', 'Stage II-anaesthesia', 'Stage III-anaesthesia', 'Stage IV-anaesthesia', 'None of above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '10. Nitrous oxide is:', options: ['Slow onset', 'Irritant', 'Good analgesic', '(a and c)', 'None of the above'], correct: 'C', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '11. Enflurane is:', options: ['Slow induction', 'Not good for patient with renal failure', 'High toxic', '(b and c)', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '12. Propofol is:', options: ['Slow metabolism', 'Slow recovery', 'Used for outpatient surgery', '(b and c)', 'None of the above'], correct: 'C', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '13. Local anesthetic injected in subarachnoid space called:', options: ['Surface anesthesia', 'Epidural anesthesia', 'Spinal anesthesia', 'Nerve block anesthesia', 'Topical anesthesia'], correct: 'C', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '14. Procaine is:', options: ['Long duration', 'Potent', 'Surface anesthetic', 'Drug abuse', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '15. Bupivacaine is:', options: ['Slow onset', 'Short duration', 'Not good in spinal anesthesia', '(a and c)', 'None of the above'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '16. Benzodiazepines are:', options: ['Less used as anxiolytic than barbiturates', 'Good orally absorption', 'Less protein binding', 'Antipsychotic activity', 'None of the above'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '17. Chlordiazepoxide is:', options: ['Reduce opiate withdrawal symptoms', 'Good for epilepsy', 'Good in tetanus', '(a and c)', 'All above'], correct: 'D', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'MCQ', question: '18. Buspirone is:', options: ['Sedative', 'Highly addiction', 'Slow onset', 'All of the above', 'None of the above'], correct: 'C', category: 'year' },
+
+        // ── B32 Opioid Analgesics ─ T/F ─────────────────────────
+        { sheet: 'B32 Opioid', type: 'TF', question: '19. Benzodiazepines used with drugs causing sedation.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'TF', question: '20. Clonazepam may be used to treat panic disorder.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'TF', question: '21. Benzodiazepines have antipsychotic activity.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'TF', question: '22. Propranolol decrease plasma level of amide local anesthetic.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'TF', question: '23. Dibucaine is amide local anesthetic.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'TF', question: '24. Etomidate may cause involuntary movement.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'TF', question: '25. Halothane is highly potent.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'TF', question: '26. Piroxicam is not safe in renal disease.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'TF', question: '27. Reye\'s syndrome is precipitation in children with bacterial infection.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'TF', question: '28. Opioid overdose is treated by naloxone.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'TF', question: '29. Heroin is converted to diamorphine.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'B32 Opioid', type: 'TF', question: '30. K (kappa) receptors, responsible for analgesia in brain.', options: ['True', 'False'], correct: 'B', category: 'year' },
     ];
 
     /* ──────────────────────────────────────────────
@@ -2822,6 +3010,18 @@
         'Antimicrobial agent',
         'Opioid'
     ];
+
+    /* ── BATCH 32 SHEET CONFIG ─────────────────────────────── */
+    const batch32Sheets = [
+        { id: 'B32 Introduction',    label: 'Introduction - Pharmacology',  icon: '💊' },
+        { id: 'B32 ANS',             label: 'Autonomic Nervous System',      icon: '⚡' },
+        { id: 'B32 Antimicrobial',   label: 'Antimicrobial Agents',          icon: '🦠' },
+        { id: 'B32 Opioid',          label: 'Opioid Analgesics',             icon: '💉' },
+    ];
+
+    /* ── SHEET DISPLAY NAME HELPER ─────────────────────────── */
+    const _b32LabelMap = Object.fromEntries(batch32Sheets.map(s => [s.id, `${s.icon} ${s.label}`]));
+    function getSheetLabel(id) { return _b32LabelMap[id] || id; }
 
     let currentSheet    = null;
     let currentQuestions = [];
@@ -2987,6 +3187,8 @@
         } else if (titleEl) {
             titleEl.innerHTML = `Welcome to <span class="text-primary">Pharmacology</span> Quiz!`;
         }
+
+        // ── Main sheets ─────────────────────────────────────────
         const grid = document.getElementById('sheets-grid');
         grid.innerHTML = '';
 
@@ -3020,12 +3222,48 @@
             `;
             grid.appendChild(card);
         });
+
+        // ── Batch 32 sub-sheets ──────────────────────────────────
+        const b32grid = document.getElementById('batch32-grid');
+        if (b32grid) {
+            b32grid.innerHTML = '';
+            batch32Sheets.forEach(({ id, label, icon }) => {
+                // Batch 32 only has 'year' category questions
+                const qYear    = allQuestions.filter(q => q.sheet === id && q.category === 'year').length;
+                const progress = progressData[id] || 0;
+
+                const card = document.createElement('div');
+                card.className = 'card b32-card';
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('aria-label', `Start ${label} — ${qYear} questions`);
+
+                // B32 sheets only have 'year' questions — skip type-select overlay
+                card.onclick   = () => { questionCategory = 'year'; startTopic(id); };
+                card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { questionCategory = 'year'; startTopic(id); } };
+
+                card.innerHTML = `
+                    <div>
+                        <h3>${icon} ${label}</h3>
+                        <div class="card-stats">
+                            <div class="stat-item"><i class="fas fa-calendar-alt" aria-hidden="true"></i> ${qYear} Questions</div>
+                            <div class="stat-item"><i class="fas fa-chart-line" aria-hidden="true"></i> ${progress}% Mastery</div>
+                        </div>
+                    </div>
+                    <div class="progress-ring" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${label} mastery">
+                        <div class="progress-fill" style="width:${progress}%"></div>
+                    </div>
+                `;
+                b32grid.appendChild(card);
+            });
+        }
     }
 
     function updateGlobalProgress() {
-        const vals = Object.values(progressData);
+        const allSheetIds = [...sheetNames, ...batch32Sheets.map(s => s.id)];
+        const vals = allSheetIds.map(s => progressData[s] || 0);
         const avg  = vals.length > 0
-            ? Math.round(vals.reduce((a, b) => a + b, 0) / sheetNames.length)
+            ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length)
             : 0;
         document.getElementById('global-percent').textContent = avg + '%';
     }
@@ -3057,16 +3295,23 @@
             return;
         }
 
+        // ── Hide ALL views first to prevent overlap on mode switch ──
         document.getElementById('view-home').classList.add('hidden');
+        document.getElementById('view-quiz').classList.add('hidden');
         document.getElementById('view-list').classList.add('hidden');
+        // Also clear question container so stale quiz card never bleeds into study view
+        const _qc = document.getElementById('question-container');
+        if (_qc) _qc.innerHTML = '';
 
         if (appMode === 'quiz') {
+            stopTimer(); // reset before re-start
             document.getElementById('view-quiz').classList.remove('hidden');
             startTimer();
             renderQuestion();
         } else {
+            stopTimer();
             document.getElementById('view-list').classList.remove('hidden');
-            renderStudyList(name, currentQuestions);
+            renderStudyList(getSheetLabel(name), currentQuestions);
         }
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -3126,7 +3371,7 @@
         container.innerHTML = `
             <div class="q-card">
                 <div class="q-meta">
-                    <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> ${currentSheet}</span>
+                    <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> ${getSheetLabel(currentSheet)}</span>
                     <div class="q-actions">
                         <button class="action-btn"
                                 onclick="copyQuestionOnly(${currentIndex})"
