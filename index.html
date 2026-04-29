@@ -3309,6 +3309,31 @@
         const grid = document.getElementById('sheets-grid');
         grid.innerHTML = '';
 
+        // ── Random Questions card (always first) ─────────────────
+        const totalAll = allQuestions.length;
+        const randomCard = document.createElement('div');
+        randomCard.className = 'card';
+        randomCard.setAttribute('role', 'button');
+        randomCard.setAttribute('tabindex', '0');
+        randomCard.setAttribute('aria-label', 'Random Questions — 50 random questions from the entire question bank');
+        randomCard.style.cssText = 'border-color:rgba(123,47,247,0.35);';
+        randomCard.innerHTML = `
+            <div>
+                <h3>🎲 Random Questions</h3>
+                <div class="card-stats">
+                    <div class="stat-item"><i class="fas fa-dice" aria-hidden="true"></i> 50 Random</div>
+                    <div class="stat-item"><i class="fas fa-database" aria-hidden="true"></i> ${totalAll} Total Pool</div>
+                    <div class="stat-item"><i class="fas fa-shuffle" aria-hidden="true"></i> All Sheets &amp; Years</div>
+                </div>
+            </div>
+            <div class="progress-ring" role="presentation">
+                <div class="progress-fill" style="width:100%; background:linear-gradient(90deg,var(--accent),var(--primary));"></div>
+            </div>
+        `;
+        randomCard.onclick   = () => startRandomQuiz();
+        randomCard.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') startRandomQuiz(); };
+        grid.appendChild(randomCard);
+
         sheetNames.forEach(sheet => {
             const qQuiz   = allQuestions.filter(q => q.sheet === sheet && q.category === 'quiz').length;
             const qYear   = allQuestions.filter(q => q.sheet === sheet && q.category === 'year').length;
@@ -3420,6 +3445,46 @@
     }
 
     /* ──────────────────────────────────────────────
+       RANDOM QUESTIONS (50 from entire bank)
+    ────────────────────────────────────────────── */
+    function startRandomQuiz() {
+        // Pool = every question across all sheets, categories, years
+        const pool = [...allQuestions];
+
+        // Fisher-Yates shuffle the full pool
+        for (let i = pool.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+
+        currentSheet     = '__random__';
+        currentQuestions = pool.slice(0, 50);
+        currentIndex     = 0;
+        userAnswers      = {};
+        flaggedQuestions = new Set();
+        confidenceMap    = {};
+        notesMap         = {};
+
+        document.getElementById('view-home').classList.add('hidden');
+        document.getElementById('view-quiz').classList.add('hidden');
+        document.getElementById('view-list').classList.add('hidden');
+        const _qc = document.getElementById('question-container');
+        if (_qc) _qc.innerHTML = '';
+
+        if (appMode === 'quiz') {
+            stopTimer();
+            document.getElementById('view-quiz').classList.remove('hidden');
+            startTimer();
+            renderQuestion();
+        } else {
+            stopTimer();
+            document.getElementById('view-list').classList.remove('hidden');
+            renderStudyList('🎲 Random Questions (50)', currentQuestions);
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ──────────────────────────────────────────────
        START TOPIC
     ────────────────────────────────────────────── */
     function startTopic(name) {
@@ -3522,7 +3587,7 @@
         container.innerHTML = `
             <div class="q-card">
                 <div class="q-meta">
-                    <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> ${getSheetLabel(currentSheet)}</span>
+                    <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> ${currentSheet === '__random__' ? '🎲 Random Questions' : getSheetLabel(currentSheet)}</span>
                     <div class="q-actions">
                         <button class="action-btn"
                                 onclick="copyQuestionOnly(${currentIndex})"
