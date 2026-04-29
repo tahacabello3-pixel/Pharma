@@ -1665,11 +1665,22 @@
             <!-- ── BATCH 32 SECTION ─────────────────────────── -->
             <div class="batch32-section" id="batch32-section">
                 <div class="batch32-header">
-                    <span class="batch32-badge">🎓 دفعة 32</span>
-                    <h2 class="batch32-title">اسئلة دفعة 32</h2>
+                    <span class="batch32-badge">📅 2022</span>
+                    <h2 class="batch32-title">2022 Questions</h2>
                     <div class="batch32-divider"></div>
                 </div>
-                <div id="batch32-grid" class="grid" aria-label="Batch 32 question sheets">
+                <div id="batch32-grid" class="grid" aria-label="2022 question sheets">
+                    <!-- Dynamically injected by JS -->
+                </div>
+            </div>
+            <!-- ── 2023 QUESTIONS SECTION ──────────────────────── -->
+            <div class="batch32-section" id="y2023-section">
+                <div class="batch32-header" style="margin-top:var(--s8);">
+                    <span class="batch32-badge" style="background:linear-gradient(135deg,#43e97b,#38f9d7);color:#003d1a;">📅 2023</span>
+                    <h2 class="batch32-title" style="background:linear-gradient(135deg,#43e97b,#38f9d7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">2023 Questions</h2>
+                    <div class="batch32-divider" style="background:linear-gradient(90deg,rgba(67,233,123,.35),transparent);"></div>
+                </div>
+                <div id="y2023-grid" class="grid" aria-label="2023 question sheets">
                     <!-- Dynamically injected by JS -->
                 </div>
             </div>
@@ -2998,6 +3009,104 @@
         { sheet: 'B32 Opioid', type: 'TF', question: '28. Opioid overdose is treated by naloxone.', options: ['True', 'False'], correct: 'A', category: 'year' },
         { sheet: 'B32 Opioid', type: 'TF', question: '29. Heroin is converted to diamorphine.', options: ['True', 'False'], correct: 'B', category: 'year' },
         { sheet: 'B32 Opioid', type: 'TF', question: '30. K (kappa) receptors, responsible for analgesia in brain.', options: ['True', 'False'], correct: 'B', category: 'year' },
+
+        // ══════════════════════════════════════════════════════════
+        // 2023 QUESTIONS
+        // ══════════════════════════════════════════════════════════
+
+        // ── Y23 Introduction - Pharmacology ─ MCQ ──────────────
+        { sheet: 'Y23 Introduction', type: 'MCQ', question: '1. Transmitter release occurs by:', options: ['Distribution', 'Exocytosis', 'Filtration', 'Passive diffusion', 'Active diffusion'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Introduction', type: 'MCQ', question: '2. Neurons carry signals away from CNS to peripheral tissues are:', options: ['Afferent', 'Efferent', 'Ganglia', 'Synaptic neurons', 'Cell bodies'], correct: 'B', category: 'year' },
+
+        // ── Y23 Autonomic Nervous System ─ MCQ ─────────────────
+        { sheet: 'Y23 ANS', type: 'MCQ', question: '1. Inhibitory feedback mechanism mediated by:', options: ['β1-receptors', 'β2-receptors', 'α1-receptors', 'α2-receptors', 'α1 and β1'], correct: 'D', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'MCQ', question: '2. Zollinger-Ellison syndrome is treated by:', options: ['Histamine', 'H1-blocker', 'H2-blocker', 'Opioid', 'Aspirin'], correct: 'C', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'MCQ', question: '3. Drug used for glaucoma and hypertension is:', options: ['Propranolol', 'Nadolol', 'Timolol', 'Idazoxan', 'Reserpine'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'MCQ', question: '4. Depolarizing blocking agent is:', options: ['Tubocurarine', 'Gallamine', 'Pancuronium', 'Suxamethonium', 'Atracurium'], correct: 'D', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'MCQ', question: '5. (I.V.) Atropine used for:', options: ['Treatment of tachycardia', 'Treatment of bradycardia', 'Stimulate salivary flow', 'Headache', 'Xerostomia'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'MCQ', question: '6. Drug used in chronic management of Myasthenia gravis is:', options: ['Physostigmine', 'Neostigmine', 'Pyridostigmine', 'Edrophonium', 'Adrenaline'], correct: 'C', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'MCQ', question: '7. M1-receptor is:', options: ['Excitatory', 'Inhibitory', 'Blocked by Pirenzepine', '(a and c)', '(a and b)'], correct: 'D', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'MCQ', question: '8. Cocaine causes:', options: ['Increase blood pressure', 'Decrease blood pressure', 'Bradycardia', 'Tachycardia', '(a and d)'], correct: 'E', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'MCQ', question: '9. Phenylephrine is:', options: ['Selective α1-agonist', 'Selective α2-agonist', 'Selective β1-agonist', 'Selective β2-agonist', 'Mixed α and β'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'MCQ', question: '10. Promethazine is:', options: ['Sedative', 'Antiemetic', 'Decrease tremor', 'All above', '(a and b)'], correct: 'D', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'MCQ', question: '11. Wheal is due to:', options: ['Capillary dilatation', 'Capillary exudation', 'Arteriolar dilatation', 'Arteriolar exudation', 'Gastric secretion'], correct: 'B', category: 'year' },
+
+        // ── Y23 Autonomic Nervous System ─ T/F ─────────────────
+        { sheet: 'Y23 ANS', type: 'TF', question: '1. Salbutamol is used to prevent premature labour.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'TF', question: '2. Flare is redness due to arteriolar dilatation.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'TF', question: '3. Trimethaphan leads to a decrease in heart rate.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'TF', question: '4. Preganglionic cell bodies originate in the ganglion and terminate on the effector organ.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'TF', question: '5. M3-receptors are excitatory.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'TF', question: '6. Pilocarpine is used to stimulate salivary flow.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'TF', question: '7. Neostigmine cannot enter the CNS.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'TF', question: '8. Dopamine is converted to Adrenaline by dopamine β-hydroxylase.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'TF', question: '9. Clonidine is a selective α2-agonist.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'TF', question: '10. Labetalol is an α1-selective blocker.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'TF', question: '11. Famotidine is an H2-blocker.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 ANS', type: 'TF', question: '12. Ach is synthesized by acetylcholinesterase.', options: ['True', 'False'], correct: 'B', category: 'year' },
+
+        // ── Y23 Antimicrobial Agents ─ MCQ ──────────────────────
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '1. PABA converted to folate by:', options: ['Dihydrofolate reductase', 'Dihydropteroate synthase', 'Tetrahydrofolate', 'DNA', 'RNA'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '2. Metronidazole is:', options: ['Antiprotozoal', 'Antiprotozoal and antibacterial', 'Antiviral', 'Analgesic', 'Narcotic'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '3. Doxycycline is excreted in:', options: ['Urine', 'Bile', 'Milk', 'GIT', 'Saliva'], correct: 'D', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '4. Imipenem is:', options: ['Given I.M.', 'Given I.V.', 'Given orally', 'Given S.C.', '(a and b)'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '5. Bacteriostatic agents are:', options: ['Increase growth of bacteria', 'Arrest growth of bacteria', 'Kill the bacteria', 'Inhibit immunity', 'Not affect bacteria'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '6. Megaloblastic anaemia is:', options: ['Calcium deficiency', 'Iron deficiency', 'Folate deficiency', 'Decrease platelets synthesis', 'Decrease White blood cells synthesis'], correct: 'C', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '7. Metallic bitter taste is unwanted effect of:', options: ['Ciprofloxacin', 'Metronidazole', 'Paracetamol', 'Aspirin', 'Penicillin'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '8. Streptomycin is used for treatment of:', options: ['Ototoxicity', 'Endocarditis', 'Tuberculosis', 'Meningitis', 'Skin infection'], correct: 'C', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '9. Tetracyclines not administered with:', options: ['Water', 'Milk', 'Meat', 'Vegetables', 'Fish'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '10. Ceftazidime is:', options: ['First generation Cephalosporines', 'Second generation Cephalosporines', 'Third generation Cephalosporines', 'Fourth generation Cephalosporines', 'Not Cephalosporines'], correct: 'C', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '11. Augmentin is:', options: ['Amoxicillin + Ampicillin', 'Amoxicillin + Cloxacillin', 'Amoxicillin + Clavulanic acid', 'Ampicillin + Clavulanic acid', 'Ampicillin + Cloxacillin'], correct: 'C', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '12. Silversulphadiazine is used:', options: ['Topical', 'Orally', 'I.V.', 'I.M.', 'Inhalation'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'MCQ', question: '13. Chloramphenicol act as:', options: ['Bacteriostatic', 'Bactericidal', '(a and b)', 'Antiprotozoal', 'Antiviral'], correct: 'C', category: 'year' },
+
+        // ── Y23 Antimicrobial Agents ─ T/F ──────────────────────
+        { sheet: 'Y23 Antimicrobial', type: 'TF', question: '1. Non-Fluorinated Quinolones have a wide spectrum of activity.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'TF', question: '2. Penicillins are widely distributed in body fluids.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'TF', question: '3. Aztreonam may cause Phlebitis.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'TF', question: '4. Kanamycin is used only topically.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'TF', question: '5. Cefotetan is a first generation Cephalosporin.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'TF', question: '6. Tetracyclines have a wide spectrum of activity.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'TF', question: '7. Trimethoprim is a bacteriostatic agent.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'TF', question: '8. Rifampin affects cell membrane permeability.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'TF', question: '9. Sulphonamides are bacteriostatic.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Antimicrobial', type: 'TF', question: '10. Trimethoprim is not combined with other drugs.', options: ['True', 'False'], correct: 'B', category: 'year' },
+
+        // ── Y23 Opioid Analgesics ─ MCQ ─────────────────────────
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '1. Regular intake of paracetamol over a long period lead to:', options: ['Blood toxicity', 'Heart pain', 'Kidney damage', 'Hallucination', 'Euphoria'], correct: 'C', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '2. Craving for drug is:', options: ['Physical dependence', 'Tolerance', 'Psychological dependence', 'Euphoria', 'Hallucination'], correct: 'C', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '3. Most analgesic action is due to:', options: ['Sigma receptors', 'μ (Mu) receptors', 'σ (delta) receptors', 'K (kappa) receptors', 'Muscarinic receptors'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '4. Benzodiazepine antagonist is:', options: ['Flumazenil', 'Diazepam', 'Midazolam', 'Buspirone', 'Propranolol'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '5. Bupivacaine is:', options: ['Short duration', 'Long duration', 'Fast onset', 'Used in dusting powder', 'Used in surface anaesthesia'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '6. Lidocaine is:', options: ['Liver metabolism', 'Slow onset', 'Not widely used', 'Not used with Adrenaline', 'Not used in arrhythmias'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '7. Local anaesthetic is injected close to nerve trunk called:', options: ['Surface anaesthesia', 'Infiltration', 'Nerve block anaesthesia', 'Spinal anaesthesia', 'Epidural anaesthesia'], correct: 'C', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '8. Nitrous oxide is:', options: ['Very rapid onset', 'Irritant', 'Not analgesics', 'Good muscle relaxant', 'High potent'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '9. Stage -I- anaesthesia is:', options: ['Excitement', 'Analgesia', 'Surgical', 'Medullary paralysis', 'Coma'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '10. Reye\'s syndrome in children caused by:', options: ['Paracetamol', 'Ibuprofen', 'Aspirin', 'Voltaren', 'Calcium'], correct: 'C', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '11. Non steroidal anti inflammatory drugs (NSAIDs) act by:', options: ['Stimulate prostaglandin', 'Stimulate prostaglanding', 'Inhibiting prostaglandin', 'Inhibiting Adrenaline', 'Inhibiting Ach'], correct: 'C', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '12. Chemoreceptor trigger zone responsible for:', options: ['Vomiting', 'Euphoria', 'Headache', 'Analgesia', 'Pain'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '13. Benzodiazepines have replaced Barbiturates as:', options: ['Sedative', 'Tranquilizer', 'Hypnotics', 'Analgesics', 'Anxiolytics'], correct: 'C', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'MCQ', question: '14. Ketamine produces:', options: ['Light anaesthesia', 'Deep anaesthesia', 'Surgical anaesthesia', 'Dissociative anaesthesia', 'Total anaesthesia'], correct: 'D', category: 'year' },
+
+        // ── Y23 Opioid Analgesics ─ T/F ─────────────────────────
+        { sheet: 'Y23 Opioid', type: 'TF', question: '1. Halothane is highly potent.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '2. Benzocaine is not used in surface anaesthesia.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '3. Mild anxiety does not require treatment.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '4. Loperamide causes diarrhea.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '5. Paracetamol is a strong anti-inflammatory.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '6. K (Kappa) receptors are responsible for most analgesic action.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '7. Etorphine has very strong potency.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '8. Methoxyflurane does not cause respiratory depression.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '9. Pentazocine is related to the Methadone series.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '10. Miosis is an important diagnosis for opioid overdose.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '11. Piroxicam causes gastric damage.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '12. Deepening anaesthesia is good for surgery.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '13. Procaine is of long duration.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '14. Buspirone is related to Benzodiazepines.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '15. A single drug is capable of achieving general anaesthesia.', options: ['True', 'False'], correct: 'B', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '16. Local anaesthetic blocks the sodium channel.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '17. Propofol is used with Fentanyl.', options: ['True', 'False'], correct: 'A', category: 'year' },
+        { sheet: 'Y23 Opioid', type: 'TF', question: '18. Diazepam is used to decrease opiate withdrawal symptoms.', options: ['True', 'False'], correct: 'A', category: 'year' },
     ];
 
     /* ──────────────────────────────────────────────
@@ -3019,8 +3128,16 @@
         { id: 'B32 Opioid',          label: 'Opioid Analgesics',             icon: '💉' },
     ];
 
+    /* ── 2023 SHEET CONFIG ─────────────────────────────────── */
+    const y2023Sheets = [
+        { id: 'Y23 Introduction',  label: 'Introduction - Pharmacology', icon: '💊' },
+        { id: 'Y23 ANS',           label: 'Autonomic Nervous System',     icon: '⚡' },
+        { id: 'Y23 Antimicrobial', label: 'Antimicrobial Agents',         icon: '🦠' },
+        { id: 'Y23 Opioid',        label: 'Opioid Analgesics',            icon: '💉' },
+    ];
+
     /* ── SHEET DISPLAY NAME HELPER ─────────────────────────── */
-    const _b32LabelMap = Object.fromEntries(batch32Sheets.map(s => [s.id, `${s.icon} ${s.label}`]));
+    const _b32LabelMap = Object.fromEntries([...batch32Sheets, ...y2023Sheets].map(s => [s.id, `${s.icon} ${s.label}`]));
     function getSheetLabel(id) { return _b32LabelMap[id] || id; }
 
     let currentSheet    = null;
@@ -3257,10 +3374,44 @@
                 b32grid.appendChild(card);
             });
         }
+
+        // ── 2023 sub-sheets ──────────────────────────────────────
+        const y2023grid = document.getElementById('y2023-grid');
+        if (y2023grid) {
+            y2023grid.innerHTML = '';
+            y2023Sheets.forEach(({ id, label, icon }) => {
+                const qYear    = allQuestions.filter(q => q.sheet === id && q.category === 'year').length;
+                const progress = progressData[id] || 0;
+
+                const card = document.createElement('div');
+                card.className = 'card b32-card';
+                card.style.borderColor = 'rgba(67,233,123,0.22)';
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('aria-label', `Start ${label} — ${qYear} questions`);
+
+                card.onclick   = () => { questionCategory = 'year'; startTopic(id); };
+                card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { questionCategory = 'year'; startTopic(id); } };
+
+                card.innerHTML = `
+                    <div>
+                        <h3>${icon} ${label}</h3>
+                        <div class="card-stats">
+                            <div class="stat-item"><i class="fas fa-calendar-alt" aria-hidden="true"></i> ${qYear} Questions</div>
+                            <div class="stat-item"><i class="fas fa-chart-line" aria-hidden="true"></i> ${progress}% Mastery</div>
+                        </div>
+                    </div>
+                    <div class="progress-ring" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${label} mastery">
+                        <div class="progress-fill" style="width:${progress}%; background:linear-gradient(90deg,#43e97b,#38f9d7);"></div>
+                    </div>
+                `;
+                y2023grid.appendChild(card);
+            });
+        }
     }
 
     function updateGlobalProgress() {
-        const allSheetIds = [...sheetNames, ...batch32Sheets.map(s => s.id)];
+        const allSheetIds = [...sheetNames, ...batch32Sheets.map(s => s.id), ...y2023Sheets.map(s => s.id)];
         const vals = allSheetIds.map(s => progressData[s] || 0);
         const avg  = vals.length > 0
             ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length)
@@ -3504,11 +3655,24 @@
             return;
         }
 
+        // Toolbar: Copy All + Export PDF
+        const toolbar = document.createElement('div');
+        toolbar.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;margin-bottom:var(--s5);';
+
         const copyAllBtn = document.createElement('button');
         copyAllBtn.className = 'copy-all-btn';
         copyAllBtn.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copy All Questions';
         copyAllBtn.onclick   = copyAllStudyQuestions;
-        container.appendChild(copyAllBtn);
+
+        const pdfBtn = document.createElement('button');
+        pdfBtn.className = 'copy-all-btn';
+        pdfBtn.style.cssText = 'border-color:var(--accent);color:var(--accent);';
+        pdfBtn.innerHTML = '<i class="fas fa-file-pdf" aria-hidden="true"></i> Export PDF';
+        pdfBtn.onclick   = exportPDF;
+
+        toolbar.appendChild(copyAllBtn);
+        toolbar.appendChild(pdfBtn);
+        container.appendChild(toolbar);
 
         questions.forEach((q, i) => {
             const card = document.createElement('div');
@@ -3529,14 +3693,33 @@
             }
 
             card.innerHTML = `
-                <div style="opacity:.55; margin-bottom:8px; font-weight:700; font-size:.8rem; text-transform:uppercase; letter-spacing:.5px;">
-                    ${q.sheet} · Q${i + 1}
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px;">
+                    <div style="opacity:.55; font-weight:700; font-size:.8rem; text-transform:uppercase; letter-spacing:.5px;">
+                        ${q.sheet} · Q${i + 1} · ${q.type}
+                    </div>
+                    <button class="action-btn"
+                            onclick="copyStudyQuestion(${i})"
+                            title="Copy this question"
+                            aria-label="Copy question ${i + 1}"
+                            style="flex-shrink:0;">
+                        <i class="fas fa-copy" aria-hidden="true"></i>
+                    </button>
                 </div>
                 <div class="q-text" style="font-size:1.15rem;">${q.question}</div>
                 ${optsHtml}
             `;
             container.appendChild(card);
         });
+    }
+
+    function copyStudyQuestion(idx) {
+        const q = currentQuestions[idx];
+        if (!q) return;
+        let text = `Q${idx + 1}: ${q.question}\n\n`;
+        text += q.options.map((o, i) => `${String.fromCharCode(65 + i)}) ${o}`).join('\n');
+        text += `\n\n✅ Correct Answer: ${q.correct}) ${q.options[q.correct.charCodeAt(0) - 65] || q.correct}`;
+        if (q.note) text += `\n💡 ${q.note}`;
+        _copyText(text, 'Question copied!');
     }
 
     /* ──────────────────────────────────────────────
@@ -3649,41 +3832,172 @@
     ────────────────────────────────────────────── */
     function copyQuestionOnly(idx) {
         const q = currentQuestions[idx];
-        const text = q.question + '\n\n' +
-            q.options.map((o, i) => `${String.fromCharCode(65 + i)}) ${o}`).join('\n');
+        if (!q) return;
+        let text = q.question + '\n\n';
+        text += q.options.map((o, i) => `${String.fromCharCode(65 + i)}) ${o}`).join('\n');
+        text += `\n\nCorrect Answer: ${q.correct}) ${q.options[q.correct.charCodeAt(0) - 65] || q.correct}`;
+        if (q.note) text += `\nExplanation: ${q.note}`;
         _copyText(text, 'Question copied!');
     }
 
     function copyAllStudyQuestions() {
-        const text = currentQuestions.map((q, i) =>
-            `Q${i + 1}: ${q.question}\n` +
-            q.options.map((o, j) => `  ${String.fromCharCode(65 + j)}) ${o}`).join('\n') +
-            `\nAnswer: ${q.correct}\n`
-        ).join('\n---\n\n');
-        _copyText(text, 'All questions copied!');
+        if (!currentQuestions || currentQuestions.length === 0) {
+            showToast('No questions to copy.', 'error');
+            return;
+        }
+
+        const sheetLabel = getSheetLabel(currentSheet) || currentSheet || 'Questions';
+        let lines = [];
+        lines.push('═'.repeat(50));
+        lines.push(`📋 ${sheetLabel}`);
+        lines.push(`Total: ${currentQuestions.length} Questions`);
+        lines.push('═'.repeat(50));
+        lines.push('');
+
+        // Group MCQ and TF separately
+        const mcqs = currentQuestions.filter(q => q.type === 'MCQ');
+        const tfs  = currentQuestions.filter(q => q.type === 'TF');
+
+        if (mcqs.length > 0) {
+            lines.push('── MCQ Questions ──────────────────────────────');
+            lines.push('');
+            mcqs.forEach((q, i) => {
+                lines.push(`Q${i + 1}: ${q.question}`);
+                q.options.forEach((o, j) => {
+                    const letter = String.fromCharCode(65 + j);
+                    lines.push(`   ${letter}) ${o}`);
+                });
+                lines.push(`   ✅ Answer: ${q.correct}) ${q.options[q.correct.charCodeAt(0) - 65] || q.correct}`);
+                if (q.note) lines.push(`   💡 ${q.note}`);
+                lines.push('');
+            });
+        }
+
+        if (tfs.length > 0) {
+            lines.push('── True / False Questions ─────────────────────');
+            lines.push('');
+            tfs.forEach((q, i) => {
+                lines.push(`Q${i + 1}: ${q.question}`);
+                lines.push(`   A) True   B) False`);
+                lines.push(`   ✅ Answer: ${q.correct === 'A' ? 'True' : 'False'}`);
+                if (q.note) lines.push(`   💡 ${q.note}`);
+                lines.push('');
+            });
+        }
+
+        lines.push('═'.repeat(50));
+        _copyText(lines.join('\n'), `All ${currentQuestions.length} questions copied!`);
     }
 
     function _copyText(text, successMsg) {
-        if (navigator.clipboard) {
+        if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(text)
                 .then(() => showToast(successMsg, 'success'))
-                .catch(() => showToast('Copy failed — try manually.', 'error'));
+                .catch(() => _copyFallback(text, successMsg));
         } else {
-            // Fallback for older browsers
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.opacity = '0';
-            document.body.appendChild(ta);
-            ta.select();
-            try {
-                document.execCommand('copy');
-                showToast(successMsg, 'success');
-            } catch (_) {
-                showToast('Copy not supported on this browser.', 'error');
-            }
-            document.body.removeChild(ta);
+            _copyFallback(text, successMsg);
         }
+    }
+
+    function _copyFallback(text, successMsg) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try {
+            document.execCommand('copy');
+            showToast(successMsg, 'success');
+        } catch (_) {
+            showToast('Copy not supported. Please copy manually.', 'error');
+        }
+        document.body.removeChild(ta);
+    }
+
+    /* ──────────────────────────────────────────────
+       PDF EXPORT
+    ────────────────────────────────────────────── */
+    function exportPDF() {
+        if (!currentQuestions || currentQuestions.length === 0) {
+            showToast('No questions to export.', 'error');
+            return;
+        }
+
+        const sheetLabel = getSheetLabel(currentSheet) || currentSheet || 'Questions';
+        const mcqs = currentQuestions.filter(q => q.type === 'MCQ');
+        const tfs  = currentQuestions.filter(q => q.type === 'TF');
+
+        const buildSection = (qs, heading) => {
+            if (qs.length === 0) return '';
+            let html = `<h2 class="section-heading">${heading} (${qs.length})</h2>`;
+            qs.forEach((q, i) => {
+                html += `<div class="question-block">`;
+                html += `<p class="question-text"><strong>Q${i + 1}.</strong> ${q.question.replace(/^\d+\.\s*/, '')}</p>`;
+                html += `<div class="options-list">`;
+                q.options.forEach((o, j) => {
+                    const letter = String.fromCharCode(65 + j);
+                    const isCorrect = letter === q.correct;
+                    html += `<div class="option-row ${isCorrect ? 'correct-opt' : ''}">
+                        <span class="opt-letter">${letter}</span>
+                        <span class="opt-text">${o}${isCorrect ? ' ✅' : ''}</span>
+                    </div>`;
+                });
+                html += `</div>`;
+                if (q.note) html += `<p class="explanation-text">💡 ${q.note}</p>`;
+                html += `</div>`;
+            });
+            return html;
+        };
+
+        const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>${sheetLabel} — Pharma Pro</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; font-size:13px; color:#111; background:#fff; padding:20px; }
+  .pdf-header { text-align:center; border-bottom:2px solid #333; padding-bottom:14px; margin-bottom:20px; }
+  .pdf-title { font-size:22px; font-weight:800; color:#0d47a1; }
+  .pdf-sub { font-size:13px; color:#555; margin-top:6px; }
+  .pdf-meta { font-size:11px; color:#888; margin-top:4px; }
+  .section-heading { font-size:15px; font-weight:700; color:#1565c0; background:#e3f2fd; padding:8px 12px; border-left:4px solid #1565c0; margin:20px 0 12px; border-radius:0 6px 6px 0; }
+  .question-block { margin-bottom:16px; padding:12px 14px; border:1px solid #e0e0e0; border-radius:8px; page-break-inside:avoid; }
+  .question-text { font-size:13px; font-weight:600; margin-bottom:8px; line-height:1.5; }
+  .options-list { display:flex; flex-direction:column; gap:4px; }
+  .option-row { display:flex; align-items:flex-start; gap:8px; padding:4px 6px; border-radius:4px; }
+  .option-row.correct-opt { background:#e8f5e9; font-weight:700; color:#1b5e20; }
+  .opt-letter { font-weight:700; min-width:20px; flex-shrink:0; }
+  .opt-text { flex:1; line-height:1.4; }
+  .explanation-text { margin-top:8px; font-size:11.5px; color:#555; font-style:italic; }
+  .pdf-footer { margin-top:30px; text-align:center; font-size:10px; color:#bbb; border-top:1px solid #eee; padding-top:10px; }
+  @media print { body { padding:10px; } }
+</style>
+</head>
+<body>
+<div class="pdf-header">
+  <div class="pdf-title">💊 Pharma Pro</div>
+  <div class="pdf-sub">${sheetLabel}</div>
+  <div class="pdf-meta">Total: ${currentQuestions.length} Questions · MCQ: ${mcqs.length} · T/F: ${tfs.length}</div>
+</div>
+${buildSection(mcqs, 'MCQ Questions')}
+${buildSection(tfs, 'True / False Questions')}
+<div class="pdf-footer">Generated by Pharma Pro · ${new Date().toLocaleDateString()}</div>
+<script>window.onload=()=>{ window.print(); }<\/script>
+</body>
+</html>`;
+
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const url  = URL.createObjectURL(blob);
+        const win  = window.open(url, '_blank');
+        if (!win) {
+            showToast('Popup blocked. Please allow popups for PDF export.', 'error');
+        } else {
+            showToast('PDF export opened! Use Print → Save as PDF.', 'success', 3500);
+        }
+        setTimeout(() => URL.revokeObjectURL(url), 30000);
     }
 
     /* ──────────────────────────────────────────────
@@ -3996,3 +4310,4 @@
     </script>
 </body>
 </html>
+
