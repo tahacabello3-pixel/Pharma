@@ -1343,6 +1343,176 @@
         .strip-dot.orange { background: #ff9800; }
         .strip-dot.grey   { background: rgba(255,255,255,.2); }
         /* ============================================================
+           HOME SELECTION FLOW - Main Cards
+        ============================================================ */
+        .home-selection-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--s6);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--s6);
+        }
+
+        .home-selection-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: var(--r-2xl);
+            padding: var(--s8);
+            cursor: pointer;
+            transition: all var(--t-normal) var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-selection-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity var(--t-normal) var(--ease);
+            z-index: 0;
+        }
+
+        .home-selection-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .home-selection-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-primary);
+        }
+
+        .home-selection-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .home-selection-icon {
+            font-size: 3.5rem;
+            margin-bottom: var(--s4);
+            display: block;
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .home-selection-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: var(--s3);
+            text-align: center;
+            letter-spacing: -.5px;
+        }
+
+        .home-selection-desc {
+            color: var(--text-muted);
+            text-align: center;
+            font-size: .95rem;
+            line-height: 1.6;
+            margin-bottom: var(--s4);
+        }
+
+        .home-selection-badge {
+            display: inline-block;
+            background: var(--primary-dim);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .3px;
+        }
+
+        /* ============================================================
+           SUB-SELECTION MODAL (for Years Questions)
+        ============================================================ */
+        .sub-selection-modal {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: var(--r-2xl);
+            padding: var(--s8);
+            max-width: 480px;
+            width: 92%;
+            box-shadow: var(--shadow-lg);
+            animation: slide-up var(--t-slow) var(--ease) both;
+        }
+
+        .sub-selection-header {
+            text-align: center;
+            margin-bottom: var(--s6);
+        }
+
+        .sub-selection-icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--s3);
+        }
+
+        .sub-selection-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: var(--s2);
+        }
+
+        .sub-selection-subtitle {
+            color: var(--text-muted);
+            font-size: .9rem;
+        }
+
+        .sub-selection-options {
+            display: grid;
+            gap: var(--s4);
+            margin-bottom: var(--s5);
+        }
+
+        .sub-selection-btn {
+            width: 100%;
+            padding: var(--s5) var(--s6);
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: var(--r-md);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--t-normal) var(--ease);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sub-selection-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .sub-selection-btn-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+
+        .sub-selection-btn-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sub-selection-btn-desc {
+            font-size: .78rem;
+            font-weight: 500;
+            opacity: .75;
+            color: var(--text-muted);
+        }
+
+        /* ============================================================
            WELCOME SCREEN
         ============================================================ */
         .welcome-card {
@@ -1650,7 +1820,7 @@
                     <h1 class="section-title">
                         Welcome to <span class="text-primary">Pharmacology</span> Quiz!
                     </h1>
-                    <p class="section-subtitle">Select a section, then choose Quizzes or Years.</p>
+                    <p class="section-subtitle">Choose how you'd like to practice today</p>
                 </div>
                 <div style="text-align:right; flex-shrink:0;">
                     <div id="global-percent" aria-label="Overall mastery percentage">0%</div>
@@ -1658,33 +1828,174 @@
                 </div>
             </div>
 
-            <div id="sheets-grid" class="grid" aria-label="Quiz sections">
-                <!-- Dynamically injected by JS -->
-            </div>
+            <!-- ── MAIN SELECTION CARDS ──────────────────────── -->
+            <div class="home-selection-container">
+                <!-- Card 1: 50 Random Questions -->
+                <div class="home-selection-card" 
+                     onclick="startRandomQuiz()" 
+                     onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();startRandomQuiz();}"
+                     role="button" 
+                     tabindex="0" 
+                     aria-label="Start 50 random questions from all topics">
+                    <div class="home-selection-card-content">
+                        <span class="home-selection-icon">🎲</span>
+                        <h2 class="home-selection-title">50 Random Questions</h2>
+                        <p class="home-selection-desc">Practice with 50 randomly selected questions from all topics in the entire app</p>
+                        <div style="text-align: center;">
+                            <span class="home-selection-badge"><i class="fas fa-database"></i> Full Question Bank</span>
+                        </div>
+                    </div>
+                </div>
 
-            <!-- ── BATCH 32 SECTION ─────────────────────────── -->
-            <div class="batch32-section" id="batch32-section">
-                <div class="batch32-header">
-                    <span class="batch32-badge">📅 2022</span>
-                    <h2 class="batch32-title">2022 Questions</h2>
-                    <div class="batch32-divider"></div>
+                <!-- Card 2: Years Questions -->
+                <div class="home-selection-card" 
+                     onclick="openYearsSelection()" 
+                     onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openYearsSelection();}"
+                     role="button" 
+                     tabindex="0" 
+                     aria-label="Choose year-based questions">
+                    <div class="home-selection-card-content">
+                        <span class="home-selection-icon">📅</span>
+                        <h2 class="home-selection-title">Years Questions</h2>
+                        <p class="home-selection-desc">Study past exam questions organized by year and topic</p>
+                        <div style="text-align: center;">
+                            <span class="home-selection-badge"><i class="fas fa-calendar-alt"></i> Past Exams</span>
+                        </div>
+                    </div>
                 </div>
-                <div id="batch32-grid" class="grid" aria-label="2022 question sheets">
-                    <!-- Dynamically injected by JS -->
-                </div>
-            </div>
-            <!-- ── 2023 QUESTIONS SECTION ──────────────────────── -->
-            <div class="batch32-section" id="y2023-section">
-                <div class="batch32-header" style="margin-top:var(--s8);">
-                    <span class="batch32-badge" style="background:linear-gradient(135deg,#43e97b,#38f9d7);color:#003d1a;">📅 2023</span>
-                    <h2 class="batch32-title" style="background:linear-gradient(135deg,#43e97b,#38f9d7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">2023 Questions</h2>
-                    <div class="batch32-divider" style="background:linear-gradient(90deg,rgba(67,233,123,.35),transparent);"></div>
-                </div>
-                <div id="y2023-grid" class="grid" aria-label="2023 question sheets">
-                    <!-- Dynamically injected by JS -->
+
+                <!-- Card 3: Quiz Questions -->
+                <div class="home-selection-card" 
+                     onclick="openQuizSelection()" 
+                     onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQuizSelection();}"
+                     role="button" 
+                     tabindex="0" 
+                     aria-label="Choose quiz questions by topic">
+                    <div class="home-selection-card-content">
+                        <span class="home-selection-icon">📚</span>
+                        <h2 class="home-selection-title">Quiz Questions</h2>
+                        <p class="home-selection-desc">Practice with curated quiz questions organized by topic</p>
+                        <div style="text-align: center;">
+                            <span class="home-selection-badge"><i class="fas fa-layer-group"></i> Topic-Based</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
+
+        <!-- ── YEARS SELECTION OVERLAY ──────────────────────── -->
+        <div id="years-selection-overlay" class="overlay hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeYearsSelection()">
+            <div class="sub-selection-modal">
+                <div class="sub-selection-header">
+                    <div class="sub-selection-icon">📅</div>
+                    <h2 class="sub-selection-title">Years Questions</h2>
+                    <p class="sub-selection-subtitle">Choose which years to study</p>
+                </div>
+                <div class="sub-selection-options">
+                    <button class="sub-selection-btn" onclick="openMultipleYearsSheets()">
+                        <div class="sub-selection-btn-content">
+                            <div class="sub-selection-btn-label">
+                                <i class="fas fa-calendar-check"></i>
+                                <span>Multiple Years Questions (2015+)</span>
+                            </div>
+                            <div class="sub-selection-btn-desc">All years questions from 2015 onwards</div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button class="sub-selection-btn" onclick="open2022Sheets()">
+                        <div class="sub-selection-btn-content">
+                            <div class="sub-selection-btn-label">
+                                <i class="fas fa-calendar"></i>
+                                <span>2022 Questions</span>
+                            </div>
+                            <div class="sub-selection-btn-desc">Batch 32 questions from 2022</div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button class="sub-selection-btn" onclick="open2023Sheets()">
+                        <div class="sub-selection-btn-content">
+                            <div class="sub-selection-btn-label">
+                                <i class="fas fa-calendar"></i>
+                                <span>2023 Questions</span>
+                            </div>
+                            <div class="sub-selection-btn-desc">Recent exam questions from 2023</div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <button onclick="closeYearsSelection()" style="width:100%;background:none;border:1px solid var(--border);color:var(--text-muted);padding:var(--s3);border-radius:var(--r-md);cursor:pointer;font-family:inherit;font-size:.9rem;">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </button>
+            </div>
+        </div>
+
+        <!-- ── SHEETS SELECTION OVERLAY (for Years - Multiple Years) ──────────────────────── -->
+        <div id="sheets-years-overlay" class="overlay hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeSheetsYearsOverlay()">
+            <div class="sub-selection-modal" style="max-width: 600px;">
+                <div class="sub-selection-header">
+                    <div class="sub-selection-icon">📚</div>
+                    <h2 class="sub-selection-title">Multiple Years (2015+)</h2>
+                    <p class="sub-selection-subtitle">Select a topic</p>
+                </div>
+                <div id="sheets-years-grid" class="grid" style="margin-bottom: var(--s5);">
+                    <!-- Dynamically injected by JS -->
+                </div>
+                <button onclick="closeSheetsYearsOverlay()" style="width:100%;background:none;border:1px solid var(--border);color:var(--text-muted);padding:var(--s3);border-radius:var(--r-md);cursor:pointer;font-family:inherit;font-size:.9rem;">
+                    <i class="fas fa-arrow-left"></i> Back to Years
+                </button>
+            </div>
+        </div>
+
+        <!-- ── SHEETS SELECTION OVERLAY (for 2022) ──────────────────────── -->
+        <div id="sheets-2022-overlay" class="overlay hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeSheets2022Overlay()">
+            <div class="sub-selection-modal" style="max-width: 600px;">
+                <div class="sub-selection-header">
+                    <div class="sub-selection-icon">📅</div>
+                    <h2 class="sub-selection-title">2022 Questions</h2>
+                    <p class="sub-selection-subtitle">Select a topic</p>
+                </div>
+                <div id="batch32-grid" class="grid" style="margin-bottom: var(--s5);">
+                    <!-- Dynamically injected by JS -->
+                </div>
+                <button onclick="closeSheets2022Overlay()" style="width:100%;background:none;border:1px solid var(--border);color:var(--text-muted);padding:var(--s3);border-radius:var(--r-md);cursor:pointer;font-family:inherit;font-size:.9rem;">
+                    <i class="fas fa-arrow-left"></i> Back to Years
+                </button>
+            </div>
+        </div>
+
+        <!-- ── SHEETS SELECTION OVERLAY (for 2023) ──────────────────────── -->
+        <div id="sheets-2023-overlay" class="overlay hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeSheets2023Overlay()">
+            <div class="sub-selection-modal" style="max-width: 600px;">
+                <div class="sub-selection-header">
+                    <div class="sub-selection-icon">📅</div>
+                    <h2 class="sub-selection-title">2023 Questions</h2>
+                    <p class="sub-selection-subtitle">Select a topic</p>
+                </div>
+                <div id="y2023-grid" class="grid" style="margin-bottom: var(--s5);">
+                    <!-- Dynamically injected by JS -->
+                </div>
+                <button onclick="closeSheets2023Overlay()" style="width:100%;background:none;border:1px solid var(--border);color:var(--text-muted);padding:var(--s3);border-radius:var(--r-md);cursor:pointer;font-family:inherit;font-size:.9rem;">
+                    <i class="fas fa-arrow-left"></i> Back to Years
+                </button>
+            </div>
+        </div>
+
+        <!-- ── SHEETS SELECTION OVERLAY (for Quiz Questions) ──────────────────────── -->
+        <div id="sheets-quiz-overlay" class="overlay hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeSheetsQuizOverlay()">
+            <div class="sub-selection-modal" style="max-width: 600px;">
+                <div class="sub-selection-header">
+                    <div class="sub-selection-icon">📚</div>
+                    <h2 class="sub-selection-title">Quiz Questions</h2>
+                    <p class="sub-selection-subtitle">Select a topic</p>
+                </div>
+                <div id="sheets-quiz-grid" class="grid" style="margin-bottom: var(--s5);">
+                    <!-- Dynamically injected by JS -->
+                </div>
+                <button onclick="closeSheetsQuizOverlay()" style="width:100%;background:none;border:1px solid var(--border);color:var(--text-muted);padding:var(--s3);border-radius:var(--r-md);cursor:pointer;font-family:inherit;font-size:.9rem;">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </button>
+            </div>
+        </div>
         <div id="welcome-screen" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="welcome-heading">
             <div class="welcome-card">
                 <div class="welcome-pill">💊 Pharma Pro</div>
@@ -1734,33 +2045,6 @@
                     <i class="fas fa-arrow-right" aria-hidden="true"></i> Let's Go!
                 </button>
                 <p class="welcome-note"><i class="fas fa-lock" aria-hidden="true"></i> Saved locally on your device only</p>
-            </div>
-        </div>
-
-        <!-- ── TYPE SELECTION OVERLAY ─────────────────────── -->
-        <div id="type-select-overlay"
-             class="overlay hidden"
-             role="dialog"
-             aria-modal="true"
-             aria-labelledby="type-select-heading"
-             onclick="if(event.target===this)closeTypeSelect()">
-            <div class="stats-modal" style="max-width:420px;">
-                <div style="font-size:2.2rem;margin-bottom:var(--s3);text-align:center;">📚</div>
-                <h2 id="type-select-heading" class="stats-title" style="margin-bottom:var(--s2);">Choose Question Type</h2>
-                <p id="type-select-sheet-name" style="color:var(--primary);font-size:1rem;font-weight:700;text-align:center;margin-bottom:var(--s6);"></p>
-                <div style="display:grid;gap:var(--s4);">
-                    <button class="primary-btn" onclick="selectTypeAndStart('quiz')" style="font-size:1.05rem;padding:var(--s5) var(--s6);display:flex;flex-direction:column;align-items:center;">
-                        <span><i class="fas fa-layer-group" aria-hidden="true"></i>&nbsp; Quizzes</span>
-                        <span style="font-size:.78rem;font-weight:500;opacity:.75;margin-top:4px;">Practice questions &amp; exercises</span>
-                    </button>
-                    <button class="secondary-btn" onclick="selectTypeAndStart('year')" style="font-size:1.05rem;padding:var(--s5) var(--s6);display:flex;flex-direction:column;align-items:center;">
-                        <span><i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp; Years (Past Exams)</span>
-                        <span style="font-size:.78rem;font-weight:500;opacity:.75;margin-top:4px;">Past exam questions by year</span>
-                    </button>
-                </div>
-                <button onclick="closeTypeSelect()" style="margin-top:var(--s4);width:100%;background:none;border:1px solid var(--border);color:var(--text-muted);padding:var(--s3);border-radius:var(--r-md);cursor:pointer;font-family:inherit;font-size:.9rem;">
-                    <i class="fas fa-times" aria-hidden="true"></i> Cancel
-                </button>
             </div>
         </div>
 
@@ -3249,31 +3533,6 @@
         currentSheet ? startTopic(currentSheet) : renderDashboard();
     }
 
-    /* ──────────────────────────────────────────────
-       TYPE SELECTION OVERLAY (shown after sheet pick)
-    ────────────────────────────────────────────── */
-    let pendingSheet = null;
-
-    function openTypeSelect(sheet) {
-        pendingSheet = sheet;
-        document.getElementById('type-select-sheet-name').textContent = sheet;
-        document.getElementById('type-select-overlay').classList.remove('hidden');
-    }
-
-    function closeTypeSelect() {
-        pendingSheet = null;
-        document.getElementById('type-select-overlay').classList.add('hidden');
-    }
-
-    function selectTypeAndStart(type) {
-        questionCategory = type;
-        const sheetToOpen = pendingSheet || currentSheet;
-        closeTypeSelect();
-        if (sheetToOpen) {
-            startTopic(sheetToOpen);
-        }
-    }
-
     /* aria-pressed helper */
     function _setAria(id, val) {
         document.getElementById(id).setAttribute('aria-pressed', val ? 'true' : 'false');
@@ -3304,57 +3563,59 @@
         } else if (titleEl) {
             titleEl.innerHTML = `Welcome to <span class="text-primary">Pharmacology</span> Quiz!`;
         }
+        
+        // No need to populate grids here anymore - they'll be populated when overlays open
+    }
 
-        // ── Main sheets ─────────────────────────────────────────
-        const grid = document.getElementById('sheets-grid');
+    /* ──────────────────────────────────────────────
+       NEW HOME SELECTION FLOW FUNCTIONS
+    ────────────────────────────────────────────── */
+    
+    // Open Years Selection Modal
+    function openYearsSelection() {
+        document.getElementById('years-selection-overlay').classList.remove('hidden');
+    }
+    
+    function closeYearsSelection() {
+        document.getElementById('years-selection-overlay').classList.add('hidden');
+    }
+    
+    // Open Multiple Years Sheets (2015+)
+    function openMultipleYearsSheets() {
+        closeYearsSelection();
+        
+        // Populate the sheets-years grid
+        const grid = document.getElementById('sheets-years-grid');
         grid.innerHTML = '';
-
-        // ── Random Questions card (always first) ─────────────────
-        const totalAll = allQuestions.length;
-        const randomCard = document.createElement('div');
-        randomCard.className = 'card';
-        randomCard.setAttribute('role', 'button');
-        randomCard.setAttribute('tabindex', '0');
-        randomCard.setAttribute('aria-label', 'Random Questions — 50 random questions from the entire question bank');
-        randomCard.style.cssText = 'border-color:rgba(123,47,247,0.35);';
-        randomCard.innerHTML = `
-            <div>
-                <h3>🎲 Random Questions</h3>
-                <div class="card-stats">
-                    <div class="stat-item"><i class="fas fa-dice" aria-hidden="true"></i> 50 Random</div>
-                    <div class="stat-item"><i class="fas fa-database" aria-hidden="true"></i> ${totalAll} Total Pool</div>
-                    <div class="stat-item"><i class="fas fa-shuffle" aria-hidden="true"></i> All Sheets &amp; Years</div>
-                </div>
-            </div>
-            <div class="progress-ring" role="presentation">
-                <div class="progress-fill" style="width:100%; background:linear-gradient(90deg,var(--accent),var(--primary));"></div>
-            </div>
-        `;
-        randomCard.onclick   = () => startRandomQuiz();
-        randomCard.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') startRandomQuiz(); };
-        grid.appendChild(randomCard);
-
+        
         sheetNames.forEach(sheet => {
-            const qQuiz   = allQuestions.filter(q => q.sheet === sheet && q.category === 'quiz').length;
             const qYear   = allQuestions.filter(q => q.sheet === sheet && q.category === 'year').length;
-            const qTotal  = qQuiz + qYear;
             const progress = progressData[sheet] || 0;
 
             const card = document.createElement('div');
             card.className = 'card';
             card.setAttribute('role', 'button');
             card.setAttribute('tabindex', '0');
-            card.setAttribute('aria-label', `Start ${sheet} — ${qTotal} questions`);
+            card.setAttribute('aria-label', `Start ${sheet} — ${qYear} year questions`);
 
-            card.onclick  = () => openTypeSelect(sheet);
-            card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') openTypeSelect(sheet); };
+            card.onclick  = () => { 
+                questionCategory = 'year'; 
+                closeSheetsYearsOverlay();
+                startTopic(sheet); 
+            };
+            card.onkeydown = e => { 
+                if (e.key === 'Enter' || e.key === ' ') { 
+                    questionCategory = 'year'; 
+                    closeSheetsYearsOverlay();
+                    startTopic(sheet); 
+                } 
+            };
 
             card.innerHTML = `
                 <div>
                     <h3>${sheet}</h3>
                     <div class="card-stats">
-                        <div class="stat-item"><i class="fas fa-layer-group" aria-hidden="true"></i> ${qQuiz} Quizzes</div>
-                        <div class="stat-item"><i class="fas fa-calendar-alt" aria-hidden="true"></i> ${qYear} Years</div>
+                        <div class="stat-item"><i class="fas fa-calendar-alt" aria-hidden="true"></i> ${qYear} Questions</div>
                         <div class="stat-item"><i class="fas fa-chart-line" aria-hidden="true"></i> ${progress}% Mastery</div>
                     </div>
                 </div>
@@ -3364,75 +3625,170 @@
             `;
             grid.appendChild(card);
         });
-
-        // ── Batch 32 sub-sheets ──────────────────────────────────
+        
+        document.getElementById('sheets-years-overlay').classList.remove('hidden');
+    }
+    
+    function closeSheetsYearsOverlay() {
+        document.getElementById('sheets-years-overlay').classList.add('hidden');
+    }
+    
+    // Open 2022 Sheets
+    function open2022Sheets() {
+        closeYearsSelection();
+        
+        // Populate batch32 grid
         const b32grid = document.getElementById('batch32-grid');
-        if (b32grid) {
-            b32grid.innerHTML = '';
-            batch32Sheets.forEach(({ id, label, icon }) => {
-                // Batch 32 only has 'year' category questions
-                const qYear    = allQuestions.filter(q => q.sheet === id && q.category === 'year').length;
-                const progress = progressData[id] || 0;
+        b32grid.innerHTML = '';
+        
+        batch32Sheets.forEach(({ id, label, icon }) => {
+            const qYear    = allQuestions.filter(q => q.sheet === id && q.category === 'year').length;
+            const progress = progressData[id] || 0;
 
-                const card = document.createElement('div');
-                card.className = 'card b32-card';
-                card.setAttribute('role', 'button');
-                card.setAttribute('tabindex', '0');
-                card.setAttribute('aria-label', `Start ${label} — ${qYear} questions`);
+            const card = document.createElement('div');
+            card.className = 'card b32-card';
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('aria-label', `Start ${label} — ${qYear} questions`);
 
-                // B32 sheets only have 'year' questions — skip type-select overlay
-                card.onclick   = () => { questionCategory = 'year'; startTopic(id); };
-                card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { questionCategory = 'year'; startTopic(id); } };
+            card.onclick   = () => { 
+                questionCategory = 'year'; 
+                closeSheets2022Overlay();
+                startTopic(id); 
+            };
+            card.onkeydown = e => { 
+                if (e.key === 'Enter' || e.key === ' ') { 
+                    questionCategory = 'year'; 
+                    closeSheets2022Overlay();
+                    startTopic(id); 
+                } 
+            };
 
-                card.innerHTML = `
-                    <div>
-                        <h3>${icon} ${label}</h3>
-                        <div class="card-stats">
-                            <div class="stat-item"><i class="fas fa-calendar-alt" aria-hidden="true"></i> ${qYear} Questions</div>
-                            <div class="stat-item"><i class="fas fa-chart-line" aria-hidden="true"></i> ${progress}% Mastery</div>
-                        </div>
+            card.innerHTML = `
+                <div>
+                    <h3>${icon} ${label}</h3>
+                    <div class="card-stats">
+                        <div class="stat-item"><i class="fas fa-calendar-alt" aria-hidden="true"></i> ${qYear} Questions</div>
+                        <div class="stat-item"><i class="fas fa-chart-line" aria-hidden="true"></i> ${progress}% Mastery</div>
                     </div>
-                    <div class="progress-ring" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${label} mastery">
-                        <div class="progress-fill" style="width:${progress}%"></div>
-                    </div>
-                `;
-                b32grid.appendChild(card);
-            });
-        }
-
-        // ── 2023 sub-sheets ──────────────────────────────────────
+                </div>
+                <div class="progress-ring" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${label} mastery">
+                    <div class="progress-fill" style="width:${progress}%"></div>
+                </div>
+            `;
+            b32grid.appendChild(card);
+        });
+        
+        document.getElementById('sheets-2022-overlay').classList.remove('hidden');
+    }
+    
+    function closeSheets2022Overlay() {
+        document.getElementById('sheets-2022-overlay').classList.add('hidden');
+    }
+    
+    // Open 2023 Sheets
+    function open2023Sheets() {
+        closeYearsSelection();
+        
+        // Populate y2023 grid
         const y2023grid = document.getElementById('y2023-grid');
-        if (y2023grid) {
-            y2023grid.innerHTML = '';
-            y2023Sheets.forEach(({ id, label, icon }) => {
-                const qYear    = allQuestions.filter(q => q.sheet === id && q.category === 'year').length;
-                const progress = progressData[id] || 0;
+        y2023grid.innerHTML = '';
+        
+        y2023Sheets.forEach(({ id, label, icon }) => {
+            const qYear    = allQuestions.filter(q => q.sheet === id && q.category === 'year').length;
+            const progress = progressData[id] || 0;
 
-                const card = document.createElement('div');
-                card.className = 'card b32-card';
-                card.style.borderColor = 'rgba(67,233,123,0.22)';
-                card.setAttribute('role', 'button');
-                card.setAttribute('tabindex', '0');
-                card.setAttribute('aria-label', `Start ${label} — ${qYear} questions`);
+            const card = document.createElement('div');
+            card.className = 'card b32-card';
+            card.style.borderColor = 'rgba(67,233,123,0.22)';
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('aria-label', `Start ${label} — ${qYear} questions`);
 
-                card.onclick   = () => { questionCategory = 'year'; startTopic(id); };
-                card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { questionCategory = 'year'; startTopic(id); } };
+            card.onclick   = () => { 
+                questionCategory = 'year'; 
+                closeSheets2023Overlay();
+                startTopic(id); 
+            };
+            card.onkeydown = e => { 
+                if (e.key === 'Enter' || e.key === ' ') { 
+                    questionCategory = 'year'; 
+                    closeSheets2023Overlay();
+                    startTopic(id); 
+                } 
+            };
 
-                card.innerHTML = `
-                    <div>
-                        <h3>${icon} ${label}</h3>
-                        <div class="card-stats">
-                            <div class="stat-item"><i class="fas fa-calendar-alt" aria-hidden="true"></i> ${qYear} Questions</div>
-                            <div class="stat-item"><i class="fas fa-chart-line" aria-hidden="true"></i> ${progress}% Mastery</div>
-                        </div>
+            card.innerHTML = `
+                <div>
+                    <h3>${icon} ${label}</h3>
+                    <div class="card-stats">
+                        <div class="stat-item"><i class="fas fa-calendar-alt" aria-hidden="true"></i> ${qYear} Questions</div>
+                        <div class="stat-item"><i class="fas fa-chart-line" aria-hidden="true"></i> ${progress}% Mastery</div>
                     </div>
-                    <div class="progress-ring" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${label} mastery">
-                        <div class="progress-fill" style="width:${progress}%; background:linear-gradient(90deg,#43e97b,#38f9d7);"></div>
+                </div>
+                <div class="progress-ring" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${label} mastery">
+                    <div class="progress-fill" style="width:${progress}%; background:linear-gradient(90deg,#43e97b,#38f9d7);"></div>
+                </div>
+            `;
+            y2023grid.appendChild(card);
+        });
+        
+        document.getElementById('sheets-2023-overlay').classList.remove('hidden');
+    }
+    
+    function closeSheets2023Overlay() {
+        document.getElementById('sheets-2023-overlay').classList.add('hidden');
+    }
+    
+    // Open Quiz Selection (shows all sheets)
+    function openQuizSelection() {
+        // Populate sheets-quiz grid
+        const grid = document.getElementById('sheets-quiz-grid');
+        grid.innerHTML = '';
+        
+        sheetNames.forEach(sheet => {
+            const qQuiz   = allQuestions.filter(q => q.sheet === sheet && q.category === 'quiz').length;
+            const progress = progressData[sheet] || 0;
+
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('aria-label', `Start ${sheet} — ${qQuiz} quiz questions`);
+
+            card.onclick  = () => { 
+                questionCategory = 'quiz'; 
+                closeSheetsQuizOverlay();
+                startTopic(sheet); 
+            };
+            card.onkeydown = e => { 
+                if (e.key === 'Enter' || e.key === ' ') { 
+                    questionCategory = 'quiz'; 
+                    closeSheetsQuizOverlay();
+                    startTopic(sheet); 
+                } 
+            };
+
+            card.innerHTML = `
+                <div>
+                    <h3>${sheet}</h3>
+                    <div class="card-stats">
+                        <div class="stat-item"><i class="fas fa-layer-group" aria-hidden="true"></i> ${qQuiz} Questions</div>
+                        <div class="stat-item"><i class="fas fa-chart-line" aria-hidden="true"></i> ${progress}% Mastery</div>
                     </div>
-                `;
-                y2023grid.appendChild(card);
-            });
-        }
+                </div>
+                <div class="progress-ring" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${sheet} mastery">
+                    <div class="progress-fill" style="width:${progress}%"></div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+        
+        document.getElementById('sheets-quiz-overlay').classList.remove('hidden');
+    }
+    
+    function closeSheetsQuizOverlay() {
+        document.getElementById('sheets-quiz-overlay').classList.add('hidden');
     }
 
     function updateGlobalProgress() {
