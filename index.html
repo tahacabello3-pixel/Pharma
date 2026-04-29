@@ -1007,6 +1007,341 @@
             }
             .blob { animation: none !important; }
         }
+
+        /* ============================================================
+           ENHANCED STUDENT FEATURES
+        ============================================================ */
+
+        /* ── Question Navigator Panel ── */
+        #q-navigator-panel {
+            position: fixed;
+            top: 0; right: 0;
+            width: min(320px, 92vw);
+            height: 100dvh;
+            background: var(--glass);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border-left: 1px solid var(--border);
+            z-index: 500;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(105%);
+            transition: transform var(--t-slow) var(--ease);
+            box-shadow: -8px 0 40px rgba(0,0,0,.4);
+        }
+        #q-navigator-panel.open { transform: translateX(0); }
+
+        .nav-panel-header {
+            padding: var(--s5) var(--s5) var(--s3);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .nav-panel-header h3 {
+            font-size: .95rem;
+            font-weight: 800;
+            letter-spacing: -.3px;
+        }
+        .nav-panel-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: var(--s3) var(--s5);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: .68rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+        .legend-dot {
+            width: 10px; height: 10px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+        .legend-dot.answered  { background: var(--success); }
+        .legend-dot.wrong     { background: var(--error); }
+        .legend-dot.flagged   { background: #ff9800; }
+        .legend-dot.current   { background: var(--primary); }
+        .legend-dot.unanswered{ background: rgba(255,255,255,.12); border:1px solid var(--border); }
+
+        .nav-grid-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--s4) var(--s5);
+        }
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+        }
+        .nav-q-btn {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            background: rgba(255,255,255,.04);
+            color: var(--text);
+            font-size: .72rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: border-color var(--t-fast) var(--ease),
+                        background   var(--t-fast) var(--ease),
+                        transform    var(--t-fast) var(--ease-spring);
+            touch-action: manipulation;
+        }
+        .nav-q-btn:hover { transform: scale(1.08); }
+        .nav-q-btn.nav-current  { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
+        .nav-q-btn.nav-correct  { border-color: var(--success); background: rgba(0,230,118,.15); color: var(--success); }
+        .nav-q-btn.nav-wrong    { border-color: var(--error);   background: rgba(255,82,82,.15);  color: var(--error);   }
+        .nav-q-btn.nav-flagged  { border-color: #ff9800;        background: rgba(255,152,0,.12);  }
+        .nav-q-btn .flag-dot {
+            position: absolute;
+            top: 2px; right: 2px;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #ff9800;
+        }
+
+        /* ── Navigator backdrop (mobile) ── */
+        #nav-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.5);
+            z-index: 499;
+        }
+        #nav-backdrop.open { display: block; }
+
+        /* ── Keyboard shortcuts hint ── */
+        #keyboard-hint {
+            position: fixed;
+            bottom: var(--s6);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: var(--s3) var(--s5);
+            display: flex;
+            gap: var(--s4);
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            z-index: 200;
+            font-size: .72rem;
+            color: var(--text-muted);
+            box-shadow: var(--shadow-md);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity var(--t-normal) var(--ease);
+            max-width: 90vw;
+        }
+        #keyboard-hint.visible { opacity: 1; }
+        .kb-key {
+            background: rgba(255,255,255,.1);
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 5px;
+            padding: 2px 6px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            color: var(--text);
+        }
+        .kb-pair { display: flex; align-items: center; gap: 4px; }
+
+        /* ── Flag button (in quiz header) ── */
+        #flag-btn {
+            transition: color var(--t-fast) var(--ease),
+                        border-color var(--t-fast) var(--ease);
+        }
+        #flag-btn.flagged { color: #ff9800 !important; border-color: #ff9800 !important; }
+
+        /* ── Confidence selector ── */
+        .confidence-bar {
+            display: flex;
+            gap: 6px;
+            margin-top: var(--s4);
+            flex-wrap: wrap;
+        }
+        .confidence-bar-label {
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            width: 100%;
+            margin-bottom: 2px;
+        }
+        .conf-btn {
+            flex: 1;
+            min-width: 80px;
+            padding: 8px 10px;
+            border-radius: var(--r-sm);
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-size: .75rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--t-fast) var(--ease);
+        }
+        .conf-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-dim); }
+        .conf-btn.active-sure    { border-color: var(--success); background: rgba(0,230,118,.15); color: var(--success); }
+        .conf-btn.active-unsure  { border-color: #ff9800; background: rgba(255,152,0,.12); color: #ff9800; }
+        .conf-btn.active-guess   { border-color: var(--error); background: rgba(255,82,82,.12); color: var(--error); }
+
+        /* ── Notes textarea ── */
+        .q-notes-area {
+            width: 100%;
+            min-height: 60px;
+            margin-top: var(--s4);
+            background: var(--bg-card);
+            border: 1px dashed var(--border);
+            border-radius: var(--r-sm);
+            color: var(--text);
+            font-family: inherit;
+            font-size: .85rem;
+            padding: var(--s3);
+            resize: vertical;
+            outline: none;
+            transition: border-color var(--t-fast) var(--ease);
+            line-height: 1.5;
+        }
+        .q-notes-area:focus { border-color: var(--primary); border-style: solid; }
+        .q-notes-area::placeholder { color: var(--text-muted); opacity: .6; }
+        .notes-label {
+            font-size: .7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-top: var(--s4);
+            margin-bottom: 4px;
+        }
+
+        /* ── Enhanced results modal ── */
+        .stats-breakdown {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: var(--s3);
+            margin: var(--s5) 0;
+        }
+        .stat-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            padding: var(--s3);
+            text-align: center;
+        }
+        .stat-box-val {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+        .stat-box-val.green { color: var(--success); }
+        .stat-box-val.red   { color: var(--error); }
+        .stat-box-val.orange { color: #ff9800; }
+        .stat-box-lbl {
+            font-size: .62rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-top: 4px;
+        }
+        .modal-btn-row {
+            display: flex;
+            gap: var(--s3);
+            margin-top: var(--s4);
+        }
+        .modal-btn-row button { flex: 1; }
+        .secondary-btn {
+            padding: 14px;
+            border-radius: var(--r-md);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text);
+            font-family: inherit;
+            font-weight: 700;
+            font-size: .9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 50px;
+            touch-action: manipulation;
+            transition: border-color var(--t-fast) var(--ease),
+                        background   var(--t-fast) var(--ease);
+        }
+        .secondary-btn:hover { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
+
+        /* ── Wrong-answers review in list ── */
+        .wrong-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255,82,82,.15);
+            border: 1px solid var(--error);
+            color: var(--error);
+            font-size: .68rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+        }
+        .your-answer-row {
+            margin-top: var(--s3);
+            font-size: .85rem;
+            color: var(--text-muted);
+        }
+
+        /* ── Shuffle button active state ── */
+        #shuffle-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        /* ── Skip / Jump to unanswered ── */
+        #jump-unanswered-btn {
+            font-size: .8rem;
+        }
+
+        /* ── Quick stats strip in quiz header ── */
+        .quiz-strip {
+            display: flex;
+            justify-content: center;
+            gap: var(--s5);
+            margin-bottom: var(--s3);
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+        .strip-item { display: flex; align-items: center; gap: 4px; }
+        .strip-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+        }
+        .strip-dot.green  { background: var(--success); }
+        .strip-dot.red    { background: var(--error); }
+        .strip-dot.orange { background: #ff9800; }
+        .strip-dot.grey   { background: rgba(255,255,255,.2); }
     </style>
 </head>
 <body>
@@ -1076,6 +1411,23 @@
                     <i class="fas fa-bookmark" aria-hidden="true"></i>
                 </button>
 
+                <!-- Shuffle -->
+                <button id="shuffle-btn"
+                        class="control-btn"
+                        onclick="toggleShuffle()"
+                        aria-label="Shuffle questions"
+                        title="Shuffle Questions">
+                    <i class="fas fa-random" aria-hidden="true"></i>
+                </button>
+
+                <!-- Wrong answers review -->
+                <button class="control-btn"
+                        onclick="showWrongAnswers()"
+                        aria-label="Review wrong answers"
+                        title="Review Wrong Answers">
+                    <i class="fas fa-times-circle" aria-hidden="true"></i>
+                </button>
+
                 <!-- Theme -->
                 <button id="theme-toggle"
                         class="control-btn"
@@ -1119,10 +1471,21 @@
                     <div id="q-counter" aria-live="polite" aria-atomic="true">Question 1/20</div>
                     <div id="quiz-timer" aria-label="Elapsed time">00:00</div>
                 </div>
-                <button id="bookmark-btn" class="nav-btn" onclick="toggleCurrentBookmark()" aria-label="Save this question">
-                    <i class="far fa-bookmark" aria-hidden="true"></i> Save
-                </button>
+                <div style="display:flex;gap:6px;align-items:center;">
+                    <button id="flag-btn" class="nav-btn" onclick="toggleFlag()" aria-label="Flag this question" title="Flag question (F)">
+                        <i class="fas fa-flag" aria-hidden="true"></i>
+                    </button>
+                    <button id="bookmark-btn" class="nav-btn" onclick="toggleCurrentBookmark()" aria-label="Save this question">
+                        <i class="far fa-bookmark" aria-hidden="true"></i> Save
+                    </button>
+                    <button class="nav-btn" onclick="openNavigator()" aria-label="Open question navigator" title="Navigator (G)" style="padding:13px 10px;">
+                        <i class="fas fa-th" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
+
+            <!-- Live quiz strip -->
+            <div class="quiz-strip" id="quiz-strip" aria-hidden="true"></div>
 
             <div class="progress-ring"
                  style="margin-bottom:var(--s8); height:6px;"
@@ -1176,6 +1539,41 @@
 
     </div><!-- /#app -->
 
+    <!-- ── QUESTION NAVIGATOR PANEL ──────────────────────── -->
+    <div id="nav-backdrop" onclick="closeNavigator()" aria-hidden="true"></div>
+    <aside id="q-navigator-panel" role="dialog" aria-modal="true" aria-label="Question navigator">
+        <div class="nav-panel-header">
+            <h3><i class="fas fa-th" aria-hidden="true" style="margin-right:6px;color:var(--primary)"></i>Question Navigator</h3>
+            <button class="action-btn" onclick="closeNavigator()" aria-label="Close navigator" style="width:32px;height:32px;">
+                <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="nav-panel-legend">
+            <div class="legend-item"><div class="legend-dot current"></div>Current</div>
+            <div class="legend-item"><div class="legend-dot answered"></div>Correct</div>
+            <div class="legend-item"><div class="legend-dot wrong"></div>Wrong</div>
+            <div class="legend-item"><div class="legend-dot flagged"></div>Flagged</div>
+            <div class="legend-item"><div class="legend-dot unanswered"></div>Not answered</div>
+        </div>
+        <div class="nav-grid-scroll">
+            <div class="nav-grid" id="nav-grid"><!-- injected by JS --></div>
+        </div>
+        <div style="padding:var(--s4) var(--s5); border-top:1px solid var(--border); flex-shrink:0;">
+            <button id="jump-unanswered-btn" class="secondary-btn" onclick="jumpToNextUnanswered()" style="width:100%;">
+                <i class="fas fa-forward" aria-hidden="true"></i> Jump to Next Unanswered
+            </button>
+        </div>
+    </aside>
+
+    <!-- ── KEYBOARD SHORTCUT HINT ─────────────────────────── -->
+    <div id="keyboard-hint" role="status" aria-live="polite">
+        <div class="kb-pair"><span class="kb-key">←</span><span class="kb-key">→</span> Navigate</div>
+        <div class="kb-pair"><span class="kb-key">A</span>–<span class="kb-key">E</span> Answer</div>
+        <div class="kb-pair"><span class="kb-key">F</span> Flag</div>
+        <div class="kb-pair"><span class="kb-key">G</span> Navigator</div>
+        <div class="kb-pair"><span class="kb-key">S</span> Save</div>
+    </div>
+
     <!-- ── STATS OVERLAY ──────────────────────────────────── -->
     <div id="stats-overlay"
          class="overlay hidden"
@@ -1192,9 +1590,34 @@
                 You answered <strong id="stat-correct" class="text-primary">0</strong>
                 of <strong id="stat-total">0</strong> questions correctly.
             </p>
-            <button class="primary-btn" onclick="closeStats()" aria-label="Return to dashboard">
-                <i class="fas fa-home" aria-hidden="true"></i> Back to Dashboard
-            </button>
+            <!-- detailed breakdown -->
+            <div class="stats-breakdown">
+                <div class="stat-box">
+                    <div id="stat-correct2" class="stat-box-val green">0</div>
+                    <div class="stat-box-lbl">Correct</div>
+                </div>
+                <div class="stat-box">
+                    <div id="stat-wrong2" class="stat-box-val red">0</div>
+                    <div class="stat-box-lbl">Wrong</div>
+                </div>
+                <div class="stat-box">
+                    <div id="stat-skipped" class="stat-box-val orange">0</div>
+                    <div class="stat-box-lbl">Skipped</div>
+                </div>
+            </div>
+            <div id="stat-time-row" style="font-size:.82rem;color:var(--text-muted);margin-bottom:var(--s4);">
+                <i class="fas fa-clock" aria-hidden="true"></i> Time: <strong id="stat-time">--</strong>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <i class="fas fa-tachometer-alt" aria-hidden="true"></i> Avg: <strong id="stat-avg">-- sec/q</strong>
+            </div>
+            <div class="modal-btn-row">
+                <button class="secondary-btn" onclick="reviewWrongFromStats()" aria-label="Review wrong answers">
+                    <i class="fas fa-redo" aria-hidden="true"></i> Review Wrong
+                </button>
+                <button class="primary-btn" onclick="closeStats()" aria-label="Return to dashboard" style="flex:1.5;">
+                    <i class="fas fa-home" aria-hidden="true"></i> Dashboard
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1517,6 +1940,14 @@
     let timerInterval   = null;
     let secondsElapsed  = 0;
 
+    /* ── NEW: enhanced student state ── */
+    let flaggedQuestions = new Set();   // Set of question indices flagged
+    let confidenceMap    = {};          // { index: 'sure'|'unsure'|'guess' }
+    let notesMap         = {};          // { index: noteText }
+    let shuffleEnabled   = false;
+    let wrongAnswersList = [];          // populated after quiz ends
+    let kbHintTimer      = null;
+
     /* ──────────────────────────────────────────────
        INIT
     ────────────────────────────────────────────── */
@@ -1621,8 +2052,21 @@
     function startTopic(name) {
         currentSheet     = name;
         currentQuestions = allQuestions.filter(q => q.sheet === name && q.category === questionCategory);
+
+        /* shuffle if enabled */
+        if (shuffleEnabled) {
+            currentQuestions = [...currentQuestions];
+            for (let i = currentQuestions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [currentQuestions[i], currentQuestions[j]] = [currentQuestions[j], currentQuestions[i]];
+            }
+        }
+
         currentIndex     = 0;
         userAnswers      = {};
+        flaggedQuestions = new Set();
+        confidenceMap    = {};
+        notesMap         = {};
 
         if (currentQuestions.length === 0) {
             showToast('No questions available for this section.', 'error');
@@ -1711,6 +2155,19 @@
                 <div class="q-text">${q.question}</div>
                 ${optionsHtml}
                 ${explanationHtml}
+                ${answered ? `
+                <div class="confidence-bar">
+                    <div class="confidence-bar-label">How confident were you?</div>
+                    <button class="conf-btn ${(confidenceMap[currentIndex]==='sure')?'active-sure':''}" onclick="setConfidence('sure')">✅ Sure</button>
+                    <button class="conf-btn ${(confidenceMap[currentIndex]==='unsure')?'active-unsure':''}" onclick="setConfidence('unsure')">🤔 Unsure</button>
+                    <button class="conf-btn ${(confidenceMap[currentIndex]==='guess')?'active-guess':''}" onclick="setConfidence('guess')">🎲 Guessed</button>
+                </div>` : ''}
+                <div class="notes-label"><i class="fas fa-pen" style="margin-right:4px;"></i>My Notes</div>
+                <textarea class="q-notes-area"
+                    placeholder="Add your personal notes for this question…"
+                    oninput="saveNote(this.value)"
+                    aria-label="Personal notes for this question"
+                >${notesMap[currentIndex] || ''}</textarea>
             </div>
         `;
 
@@ -1724,6 +2181,9 @@
         nextBtn.setAttribute('aria-label', isLast ? 'Finish quiz' : 'Next question');
 
         updateBookmarkBtn();
+        updateFlagBtn();
+        renderNavigatorGrid();
+        updateQuizStrip();
     }
 
     function handleOptionSelect(val) {
@@ -1760,17 +2220,34 @@
 
         const correctCount = Object.keys(userAnswers)
             .filter(idx => userAnswers[idx] === currentQuestions[idx].correct).length;
+        const wrongCount   = Object.keys(userAnswers)
+            .filter(idx => userAnswers[idx] !== currentQuestions[idx].correct).length;
+        const skippedCount = currentQuestions.length - Object.keys(userAnswers).length;
         const total   = currentQuestions.length;
         const percent = Math.round((correctCount / total) * 100);
+
+        // Build wrong-answers list for review
+        wrongAnswersList = currentQuestions
+            .map((q, idx) => ({ q, idx, given: userAnswers[idx] }))
+            .filter(({ given, q }) => given !== undefined && given !== q.correct);
 
         // Persist best score
         progressData[currentSheet] = Math.max(progressData[currentSheet] || 0, percent);
         try { localStorage.setItem('pharma_progress_final_v2', JSON.stringify(progressData)); }
         catch (_) {}
 
+        const m   = Math.floor(secondsElapsed / 60).toString().padStart(2,'0');
+        const s   = (secondsElapsed % 60).toString().padStart(2,'0');
+        const avg = total > 0 ? (secondsElapsed / total).toFixed(1) : 0;
+
         document.getElementById('final-score-pct').textContent = percent + '%';
         document.getElementById('stat-correct').textContent    = correctCount;
         document.getElementById('stat-total').textContent      = total;
+        document.getElementById('stat-correct2').textContent   = correctCount;
+        document.getElementById('stat-wrong2').textContent     = wrongCount;
+        document.getElementById('stat-skipped').textContent    = skippedCount;
+        document.getElementById('stat-time').textContent       = `${m}:${s}`;
+        document.getElementById('stat-avg').textContent        = `${avg} sec/q`;
         document.getElementById('stats-overlay').classList.remove('hidden');
         document.getElementById('stats-overlay').focus();
 
@@ -2054,7 +2531,239 @@
             setTimeout(() => c.remove(), 5000);
         }
     }
+    /* ──────────────────────────────────────────────
+       FLAG QUESTION
+    ────────────────────────────────────────────── */
+    function toggleFlag() {
+        if (flaggedQuestions.has(currentIndex)) {
+            flaggedQuestions.delete(currentIndex);
+            showToast('Flag removed.', '');
+        } else {
+            flaggedQuestions.add(currentIndex);
+            showToast('Question flagged! 🚩', 'success');
+        }
+        updateFlagBtn();
+        renderNavigatorGrid();
+    }
+
+    function updateFlagBtn() {
+        const btn = document.getElementById('flag-btn');
+        if (!btn) return;
+        const isFlagged = flaggedQuestions.has(currentIndex);
+        btn.classList.toggle('flagged', isFlagged);
+        btn.setAttribute('title', isFlagged ? 'Unflag question (F)' : 'Flag question (F)');
+    }
+
+    /* ──────────────────────────────────────────────
+       CONFIDENCE RATING
+    ────────────────────────────────────────────── */
+    function setConfidence(level) {
+        confidenceMap[currentIndex] = level;
+        // Re-render only the confidence bar without full re-render
+        document.querySelectorAll('.conf-btn').forEach(btn => {
+            btn.className = 'conf-btn';
+            if (btn.textContent.trim().toLowerCase().includes(level === 'sure' ? 'sure' : level === 'unsure' ? 'unsure' : 'guess')) {
+                btn.classList.add(`active-${level}`);
+            }
+        });
+        const labelMap = { sure: 'Marked as: Sure ✅', unsure: 'Marked as: Unsure 🤔', guess: 'Marked as: Guessed 🎲' };
+        showToast(labelMap[level], 'success');
+        renderNavigatorGrid();
+    }
+
+    /* ──────────────────────────────────────────────
+       NOTES
+    ────────────────────────────────────────────── */
+    function saveNote(val) {
+        notesMap[currentIndex] = val;
+    }
+
+    /* ──────────────────────────────────────────────
+       SHUFFLE
+    ────────────────────────────────────────────── */
+    function toggleShuffle() {
+        shuffleEnabled = !shuffleEnabled;
+        const btn = document.getElementById('shuffle-btn');
+        btn.classList.toggle('active', shuffleEnabled);
+        btn.setAttribute('title', shuffleEnabled ? 'Shuffle: ON — click to turn off' : 'Shuffle Questions');
+        showToast(shuffleEnabled ? 'Shuffle ON — next session will shuffle!' : 'Shuffle OFF', shuffleEnabled ? 'success' : '');
+    }
+
+    /* ──────────────────────────────────────────────
+       QUESTION NAVIGATOR
+    ────────────────────────────────────────────── */
+    function openNavigator() {
+        renderNavigatorGrid();
+        document.getElementById('q-navigator-panel').classList.add('open');
+        document.getElementById('nav-backdrop').classList.add('open');
+    }
+
+    function closeNavigator() {
+        document.getElementById('q-navigator-panel').classList.remove('open');
+        document.getElementById('nav-backdrop').classList.remove('open');
+    }
+
+    function renderNavigatorGrid() {
+        const grid = document.getElementById('nav-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        currentQuestions.forEach((q, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'nav-q-btn';
+            btn.textContent = idx + 1;
+            btn.setAttribute('aria-label', `Go to question ${idx + 1}`);
+
+            if (idx === currentIndex) btn.classList.add('nav-current');
+            else if (userAnswers[idx] !== undefined) {
+                btn.classList.add(userAnswers[idx] === q.correct ? 'nav-correct' : 'nav-wrong');
+            }
+            if (flaggedQuestions.has(idx)) {
+                btn.classList.add('nav-flagged');
+                const dot = document.createElement('span');
+                dot.className = 'flag-dot';
+                btn.appendChild(dot);
+            }
+
+            btn.onclick = () => {
+                currentIndex = idx;
+                renderQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                closeNavigator();
+            };
+            grid.appendChild(btn);
+        });
+    }
+
+    function jumpToNextUnanswered() {
+        for (let i = currentIndex + 1; i < currentQuestions.length; i++) {
+            if (userAnswers[i] === undefined) {
+                currentIndex = i;
+                renderQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                closeNavigator();
+                return;
+            }
+        }
+        // wrap around from beginning
+        for (let i = 0; i < currentIndex; i++) {
+            if (userAnswers[i] === undefined) {
+                currentIndex = i;
+                renderQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                closeNavigator();
+                return;
+            }
+        }
+        showToast('All questions answered!', 'success');
+        closeNavigator();
+    }
+
+    /* ──────────────────────────────────────────────
+       LIVE QUIZ STRIP
+    ────────────────────────────────────────────── */
+    function updateQuizStrip() {
+        const strip = document.getElementById('quiz-strip');
+        if (!strip) return;
+        const answered = Object.keys(userAnswers).length;
+        const correct  = Object.keys(userAnswers).filter(i => userAnswers[i] === currentQuestions[i].correct).length;
+        const wrong    = answered - correct;
+        const flagged  = flaggedQuestions.size;
+        const left     = currentQuestions.length - answered;
+        strip.innerHTML = `
+            <div class="strip-item"><div class="strip-dot green"></div>${correct} Correct</div>
+            <div class="strip-item"><div class="strip-dot red"></div>${wrong} Wrong</div>
+            <div class="strip-item"><div class="strip-dot orange"></div>${flagged} Flagged</div>
+            <div class="strip-item"><div class="strip-dot grey"></div>${left} Left</div>
+        `;
+    }
+
+    /* ──────────────────────────────────────────────
+       WRONG ANSWERS REVIEW
+    ────────────────────────────────────────────── */
+    function showWrongAnswers() {
+        const wrongInHistory = allQuestions.filter(q => {
+            // Use session wrongAnswersList if available, else nothing
+            return false;
+        });
+        // Show the most recent session's wrong answers
+        if (wrongAnswersList.length === 0) {
+            showToast('No wrong answers to review yet. Complete a quiz first!', '');
+            return;
+        }
+        document.getElementById('view-home').classList.add('hidden');
+        document.getElementById('view-quiz').classList.add('hidden');
+        document.getElementById('view-list').classList.remove('hidden');
+        document.getElementById('list-title').textContent = `Wrong Answers Review (${wrongAnswersList.length})`;
+
+        const container = document.getElementById('list-container');
+        container.innerHTML = '';
+
+        wrongAnswersList.forEach(({ q, idx, given }) => {
+            const givenLetter = given || '—';
+            const givenText   = given ? (q.options[given.charCodeAt(0) - 65] || given) : 'Not answered';
+            const correctText = q.options[q.correct.charCodeAt(0) - 65] || q.correct;
+
+            const card = document.createElement('div');
+            card.className = 'q-card';
+            card.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s3);">
+                    <span style="opacity:.6;font-weight:700;font-size:.8rem;text-transform:uppercase;">${q.sheet}</span>
+                    <span class="wrong-badge"><i class="fas fa-times" aria-hidden="true"></i> Wrong</span>
+                </div>
+                <div class="q-text" style="font-size:1.1rem;">${q.question}</div>
+                <div class="your-answer-row">
+                    <span style="color:var(--error);">❌ Your answer: <strong>${givenLetter}) ${givenText}</strong></span>
+                </div>
+                <div class="explanation">
+                    <strong>✅ Correct Answer: ${q.correct}) ${correctText}</strong>
+                    ${q.note ? `<div style="margin-top:8px;opacity:.9;font-size:.9rem;">💡 ${q.note}</div>` : ''}
+                    ${notesMap[idx] ? `<div style="margin-top:8px;font-size:.85rem;color:var(--text-muted);border-top:1px solid rgba(255,255,255,.06);padding-top:8px;">📝 <em>${notesMap[idx]}</em></div>` : ''}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function reviewWrongFromStats() {
+        document.getElementById('stats-overlay').classList.add('hidden');
+        showWrongAnswers();
+    }
+
+    /* ──────────────────────────────────────────────
+       KEYBOARD SHORTCUTS
+    ────────────────────────────────────────────── */
+    document.addEventListener('keydown', (e) => {
+        // Only active in quiz view
+        const quizVisible = !document.getElementById('view-quiz').classList.contains('hidden');
+        if (!quizVisible) return;
+
+        // Don't intercept when typing in textarea
+        if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+
+        const key = e.key.toUpperCase();
+
+        if (e.key === 'ArrowRight') { e.preventDefault(); navigateQuestion(1); showKbHint(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); navigateQuestion(-1); showKbHint(); }
+        else if (key === 'F') { e.preventDefault(); toggleFlag(); showKbHint(); }
+        else if (key === 'G') { e.preventDefault(); openNavigator(); }
+        else if (key === 'S') { e.preventDefault(); toggleCurrentBookmark(); showKbHint(); }
+        else if (['A','B','C','D','E'].includes(key)) {
+            const idx = key.charCodeAt(0) - 65;
+            if (currentQuestions[currentIndex] && currentQuestions[currentIndex].options[idx] !== undefined) {
+                e.preventDefault();
+                handleOptionSelect(key);
+                showKbHint();
+            }
+        }
+    });
+
+    function showKbHint() {
+        const hint = document.getElementById('keyboard-hint');
+        hint.classList.add('visible');
+        clearTimeout(kbHintTimer);
+        kbHintTimer = setTimeout(() => hint.classList.remove('visible'), 2800);
+    }
+
     </script>
 </body>
 </html>
-
