@@ -4137,8 +4137,12 @@
         const q = currentQuestions[idx];
         if (!q) return;
         let text = `Q${idx + 1}: ${q.question}\n\n`;
-        text += q.options.map((o, i) => `${String.fromCharCode(65 + i)}) ${o}`).join('\n');
-        text += `\n\n✅ Correct Answer: ${q.correct}) ${q.options[q.correct.charCodeAt(0) - 65] || q.correct}`;
+        if (q.options && q.options.length) {
+            text += q.options.map((o, i) => `${String.fromCharCode(65 + i)}) ${o}`).join('\n');
+            text += `\n\n✅ Correct Answer: ${q.correct}) ${q.options[q.correct.charCodeAt(0) - 65] || q.correct}`;
+        } else {
+            text += `✅ Correct Answer: ${q.correct}`;
+        }
         if (q.note) text += `\n💡 ${q.note}`;
         _copyText(text, 'Question copied!');
     }
@@ -4156,6 +4160,10 @@
         const results = allQuestions
             .filter(q => q.question.toLowerCase().includes(term))
             .slice(0, 50);
+
+        // ✅ Fix: update currentQuestions so copyStudyQuestion() reads the right data
+        currentQuestions = results;
+        currentSheet     = '__search__';
 
         document.getElementById('view-home').classList.add('hidden');
         document.getElementById('view-quiz').classList.add('hidden');
@@ -4255,8 +4263,12 @@
         const q = currentQuestions[idx];
         if (!q) return;
         let text = q.question + '\n\n';
-        text += q.options.map((o, i) => `${String.fromCharCode(65 + i)}) ${o}`).join('\n');
-        text += `\n\nCorrect Answer: ${q.correct}) ${q.options[q.correct.charCodeAt(0) - 65] || q.correct}`;
+        if (q.options && q.options.length) {
+            text += q.options.map((o, i) => `${String.fromCharCode(65 + i)}) ${o}`).join('\n');
+            text += `\n\nCorrect Answer: ${q.correct}) ${q.options[q.correct.charCodeAt(0) - 65] || q.correct}`;
+        } else {
+            text += `Correct Answer: ${q.correct}`;
+        }
         if (q.note) text += `\nExplanation: ${q.note}`;
         _copyText(text, 'Question copied!');
     }
